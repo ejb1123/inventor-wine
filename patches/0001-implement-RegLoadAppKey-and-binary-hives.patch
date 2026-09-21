@@ -92,8 +92,8 @@ index 85f636d..16c6f3d 100644
      struct d3dkmt_mutex_release_reply d3dkmt_mutex_release_reply;
  };
  
--#define SERVER_PROTOCOL_VERSION 931
-+#define SERVER_PROTOCOL_VERSION 932
+-#define SERVER_PROTOCOL_VERSION 932
++#define SERVER_PROTOCOL_VERSION 933
  
  #endif /* __WINE_WINE_SERVER_PROTOCOL_H */
 diff --git a/server/protocol.def b/server/protocol.def
