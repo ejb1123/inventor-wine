@@ -1,0 +1,430 @@
+diff --git a/dlls/kernelbase/registry.c b/dlls/kernelbase/registry.c
+index 7ec30c2..506dcf5 100644
+--- a/dlls/kernelbase/registry.c
++++ b/dlls/kernelbase/registry.c
+@@ -3227,13 +3227,25 @@ LSTATUS WINAPI RegLoadAppKeyA(const char *file, HKEY *result, REGSAM sam, DWORD
+  */
+ LSTATUS WINAPI RegLoadAppKeyW(const WCHAR *file, HKEY *result, REGSAM sam, DWORD options, DWORD reserved)
+ {
+-    FIXME("%s %p %lu %lu %lu: stub\n", wine_dbgstr_w(file), result, sam, options, reserved);
+-
+-    if (!file || reserved)
+-        return ERROR_INVALID_PARAMETER;
++    OBJECT_ATTRIBUTES file_attr, key_attr;
++    UNICODE_STRING nt_name, key_name;
++    WCHAR app_name[64];
++    NTSTATUS status;
+ 
+-    *result = (HKEY)0xdeadbeef;
+-    return ERROR_SUCCESS;
++    TRACE("%s %p %lu %lu %lu\n", wine_dbgstr_w(file), result, sam, options, reserved);
++    if (!file || !result || reserved || (options & ~REG_PROCESS_APPKEY)) return ERROR_INVALID_PARAMETER;
++    *result = NULL;
++    if (!RtlDosPathNameToNtPathName_U(file, &nt_name, NULL, NULL)) return ERROR_PATH_NOT_FOUND;
++
++    swprintf(app_name, ARRAY_SIZE(app_name), L"\\Registry\\A\\WineAppHive_%08lx_%p", GetCurrentProcessId(), result);
++    RtlInitUnicodeString(&key_name, app_name);
++    InitializeObjectAttributes(&key_attr, &key_name, OBJ_CASE_INSENSITIVE, NULL, NULL);
++    InitializeObjectAttributes(&file_attr, &nt_name, OBJ_CASE_INSENSITIVE, NULL, NULL);
++    status = NtLoadKeyEx(&key_attr, &file_attr,
++                         REG_APP_HIVE | (options & REG_PROCESS_APPKEY ? REG_PROCESS_PRIVATE : 0),
++                         NULL, NULL, sam, (HANDLE *)result, NULL);
++    RtlFreeUnicodeString(&nt_name);
++    return RtlNtStatusToDosError(status);
+ }
+ 
+ 
+diff --git a/dlls/ntdll/unix/registry.c b/dlls/ntdll/unix/registry.c
+index da1c2e1..38d9ea7 100644
+--- a/dlls/ntdll/unix/registry.c
++++ b/dlls/ntdll/unix/registry.c
+@@ -725,13 +725,14 @@ NTSTATUS WINAPI NtLoadKeyEx( const OBJECT_ATTRIBUTES *attr, OBJECT_ATTRIBUTES *f
+     TRACE( "(%p,%p,0x%x,%p,%p,0x%x,%p,%p)\n",
+            attr, file, flags, trustkey, event, access, roothandle, iostatus );
+ 
+-    if (flags) FIXME( "flags %x not handled\n", flags );
++    if (flags & ~(REG_APP_HIVE | REG_PROCESS_PRIVATE)) FIXME( "flags %x not handled\n", flags );
+     if (trustkey) FIXME("trustkey parameter not supported\n");
+     if (event) FIXME("event parameter not supported\n");
+-    if (access) FIXME("access parameter not supported\n");
+-    if (roothandle) FIXME("roothandle is not filled\n");
+     if (iostatus) FIXME("iostatus is not filled\n");
+ 
++    if ((flags & REG_PROCESS_PRIVATE) && !(flags & REG_APP_HIVE)) return STATUS_INVALID_PARAMETER;
++    if ((flags & REG_APP_HIVE) && !roothandle) return STATUS_INVALID_PARAMETER;
++
+     if (!(ret = get_nt_and_unix_names( &new_attr, &nt_name, &unix_name, FILE_OPEN, FALSE )))
+     {
+         ret = open_unix_file( &key, unix_name, GENERIC_READ | SYNCHRONIZE,
+@@ -748,8 +749,11 @@ NTSTATUS WINAPI NtLoadKeyEx( const OBJECT_ATTRIBUTES *attr, OBJECT_ATTRIBUTES *f
+     SERVER_START_REQ( load_registry )
+     {
+         req->file = wine_server_obj_handle( key );
++        req->flags = flags;
++        req->access = access;
+         wine_server_add_data( req, objattr, len );
+         ret = wine_server_call( req );
++        if (!ret && roothandle) *roothandle = wine_server_ptr_handle( reply->hkey );
+         if (ret == STATUS_OBJECT_NAME_EXISTS) ret = STATUS_SUCCESS;
+     }
+     SERVER_END_REQ;
+diff --git a/include/wine/server_protocol.h b/include/wine/server_protocol.h
+index 85f636d..16c6f3d 100644
+--- a/include/wine/server_protocol.h
++++ b/include/wine/server_protocol.h
+@@ -2708,11 +2708,15 @@ struct load_registry_request
+ {
+     struct request_header __header;
+     obj_handle_t file;
++    unsigned int flags;
++    unsigned int access;
+     /* VARARG(objattr,object_attributes); */
+ };
+ struct load_registry_reply
+ {
+     struct reply_header __header;
++    obj_handle_t hkey;
++    char __pad_12[4];
+ };
+ 
+ 
+@@ -7096,6 +7100,6 @@ union generic_reply
+     struct d3dkmt_mutex_release_reply d3dkmt_mutex_release_reply;
+ };
+ 
+-#define SERVER_PROTOCOL_VERSION 931
++#define SERVER_PROTOCOL_VERSION 932
+ 
+ #endif /* __WINE_WINE_SERVER_PROTOCOL_H */
+diff --git a/server/protocol.def b/server/protocol.def
+index 5bca381..ac5e1b0 100644
+--- a/server/protocol.def
++++ b/server/protocol.def
+@@ -2136,7 +2136,11 @@ struct process_info
+ /* Load a registry branch from a file */
+ @REQ(load_registry)
+     obj_handle_t file;         /* file to load from */
++    unsigned int flags;        /* REG_* load flags */
++    unsigned int access;       /* access for returned app-hive handle */
+     VARARG(objattr,object_attributes); /* object attributes */
++@REPLY
++    obj_handle_t hkey;         /* handle to loaded app hive */
+ @END
+ 
+ 
+diff --git a/server/registry.c b/server/registry.c
+index 91b3265..6df1fd8 100644
+--- a/server/registry.c
++++ b/server/registry.c
+@@ -163,6 +163,51 @@ struct file_load_info
+     size_t      tmplen;   /* length of temp buffer */
+ };
+ 
++/* On-disk structures used by native Windows REGF hive files. */
++struct regf_header
++{
++    char signature[4];
++    unsigned int seq_primary, seq_secondary;
++    unsigned char unused1[24];
++    unsigned int root_offset, bins_size;
++};
++
++struct regf_named_key
++{
++    int size;
++    unsigned short signature, flags;
++    unsigned char timestamp[8];
++    unsigned int unused1, parent_offset, subkeys, volatile_subkeys;
++    unsigned int subkeys_offset, volatile_subkeys_offset, values, values_offset;
++    unsigned int security_offset, class_offset, max_name, max_class, max_value_name, max_value;
++    unsigned int unused2;
++    unsigned short name_size, class_size;
++};
++
++struct regf_value_key
++{
++    int size;
++    unsigned short signature, name_size;
++    unsigned int data_size, data_offset, type;
++    unsigned short flags, unused;
++};
++
++struct regf_key_list
++{
++    int size;
++    unsigned short signature, count;
++};
++
++struct regf_image
++{
++    const unsigned char *data;
++    size_t size;
++};
++
++#define REGF_KEY_COMP_NAME 0x20
++#define REGF_VALUE_COMP_NAME 0x01
++#define REGF_HBIN_OFFSET 4096
++
+ 
+ static void key_dump( struct object *obj, int verbose );
+ static unsigned int key_map_access( struct object *obj, unsigned int access );
+@@ -1788,6 +1833,160 @@ static void load_keys( struct key *key, const char *filename, FILE *f, int prefi
+     free( info.tmp );
+ }
+ 
++static const void *regf_cell( const struct regf_image *image, unsigned int offset, size_t size )
++{
++    size_t pos = REGF_HBIN_OFFSET + (size_t)offset;
++    int cell_size;
++
++    if (pos > image->size || size > image->size - pos || size < sizeof(cell_size)) return NULL;
++    memcpy( &cell_size, image->data + pos, sizeof(cell_size) );
++    if (cell_size >= 0 || (size_t)-cell_size < size || (size_t)-cell_size > image->size - pos) return NULL;
++    return image->data + pos;
++}
++
++static int regf_name( const unsigned char *src, unsigned int size, int compressed,
++                      WCHAR **buffer, struct unicode_str *name )
++{
++    unsigned int i, chars = compressed ? size : size / sizeof(WCHAR);
++
++    if (!compressed && (size & 1)) return 0;
++    if (!(*buffer = mem_alloc( (chars ? chars : 1) * sizeof(WCHAR) ))) return 0;
++    if (compressed)
++        for (i = 0; i < chars; i++) (*buffer)[i] = src[i];
++    else
++        memcpy( *buffer, src, size );
++    name->str = *buffer;
++    name->len = chars * sizeof(WCHAR);
++    return 1;
++}
++
++static int load_regf_key( const struct regf_image *image, struct key *parent, unsigned int offset );
++
++static int load_regf_subkeys( const struct regf_image *image, struct key *parent, unsigned int offset )
++{
++    const struct regf_key_list *list = regf_cell( image, offset, sizeof(*list) );
++    const unsigned int *offsets;
++    unsigned int i, stride;
++
++    if (!list) return 0;
++    if (list->signature == 0x666c || list->signature == 0x686c) stride = 2; /* lf/lh */
++    else if (list->signature == 0x696c || list->signature == 0x6972) stride = 1; /* li/ri */
++    else return 0;
++    offsets = regf_cell( image, offset, sizeof(*list) + list->count * stride * sizeof(*offsets) );
++    if (!offsets) return 0;
++    offsets = (const unsigned int *)((const unsigned char *)offsets + sizeof(*list));
++    for (i = 0; i < list->count; i++)
++    {
++        if (list->signature == 0x6972)
++        {
++            if (!load_regf_subkeys( image, parent, offsets[i] )) return 0;
++        }
++        else if (!load_regf_key( image, parent, offsets[i * stride] )) return 0;
++    }
++    return 1;
++}
++
++static int load_regf_value( const struct regf_image *image, struct key *key, unsigned int offset )
++{
++    const struct regf_value_key *value = regf_cell( image, offset, sizeof(*value) );
++    const unsigned char *data = NULL;
++    struct unicode_str name;
++    unsigned int data_size;
++    WCHAR *name_buffer;
++
++    if (!value || value->signature != 0x6b76 ||
++        !regf_cell( image, offset, sizeof(*value) + value->name_size )) return 0;
++    if (!regf_name( (const unsigned char *)(value + 1), value->name_size,
++                    value->flags & REGF_VALUE_COMP_NAME, &name_buffer, &name )) return 0;
++    data_size = value->data_size & 0x7fffffff;
++    if (value->data_size & 0x80000000) data = (const unsigned char *)&value->data_offset;
++    else if (data_size)
++    {
++        const int *cell = regf_cell( image, value->data_offset, sizeof(int) + data_size );
++        if (!cell) { free( name_buffer ); return 0; }
++        data = (const unsigned char *)(cell + 1);
++    }
++    set_value( key, &name, value->type, data, data_size );
++    free( name_buffer );
++    return !get_error();
++}
++
++static int load_regf_key( const struct regf_image *image, struct key *parent, unsigned int offset )
++{
++    const struct regf_named_key *node = regf_cell( image, offset, sizeof(*node) );
++    const unsigned int *value_offsets;
++    struct unicode_str name;
++    struct key *key;
++    WCHAR *name_buffer;
++    unsigned int i;
++
++    if (!node || node->signature != 0x6b6e ||
++        !regf_cell( image, offset, sizeof(*node) + node->name_size )) return 0;
++    if (!regf_name( (const unsigned char *)(node + 1), node->name_size,
++                    node->flags & REGF_KEY_COMP_NAME, &name_buffer, &name )) return 0;
++    key = create_key( parent, &name, 0, KEY_WOW64_64KEY, OBJ_OPENIF | OBJ_CASE_INSENSITIVE, NULL );
++    free( name_buffer );
++    if (!key) return 0;
++
++    if (node->values)
++    {
++        const int *cell = regf_cell( image, node->values_offset,
++                                     sizeof(int) + node->values * sizeof(*value_offsets) );
++        if (!cell) { release_object( key ); return 0; }
++        value_offsets = (const unsigned int *)(cell + 1);
++        for (i = 0; i < node->values; i++)
++            if (!load_regf_value( image, key, value_offsets[i] )) { release_object( key ); return 0; }
++    }
++    if (node->subkeys && !load_regf_subkeys( image, key, node->subkeys_offset ))
++    {
++        release_object( key );
++        return 0;
++    }
++    release_object( key );
++    return 1;
++}
++
++static int load_regf( struct key *key, int fd )
++{
++    struct regf_image image;
++    struct regf_header *header;
++    struct regf_named_key *root;
++    struct stat st;
++    unsigned char *buffer;
++    ssize_t count;
++    size_t done = 0;
++    int ret = 0;
++
++    if (fstat( fd, &st ) == -1 || st.st_size < REGF_HBIN_OFFSET ||
++        !(buffer = mem_alloc( st.st_size ))) return 0;
++    while (done < st.st_size)
++    {
++        count = pread( fd, buffer + done, st.st_size - done, done );
++        if (count <= 0) goto done;
++        done += count;
++    }
++    image.data = buffer;
++    image.size = st.st_size;
++    header = (struct regf_header *)buffer;
++    if (memcmp( header->signature, "regf", 4 )) goto done;
++    root = (struct regf_named_key *)regf_cell( &image, header->root_offset, sizeof(*root) );
++    if (!root || root->signature != 0x6b6e) goto done;
++    if (root->values)
++    {
++        const unsigned int *offsets;
++        const int *cell = regf_cell( &image, root->values_offset,
++                                     sizeof(int) + root->values * sizeof(*offsets) );
++        unsigned int i;
++        if (!cell) goto done;
++        offsets = (const unsigned int *)(cell + 1);
++        for (i = 0; i < root->values; i++) if (!load_regf_value( &image, key, offsets[i] )) goto done;
++    }
++    ret = !root->subkeys || load_regf_subkeys( &image, key, root->subkeys_offset );
++done:
++    free( buffer );
++    return ret;
++}
++
+ /* load a part of the registry from a file */
+ static void load_registry( struct key *key, obj_handle_t handle )
+ {
+@@ -1799,7 +1998,15 @@ static void load_registry( struct key *key, obj_handle_t handle )
+     release_object( file );
+     if (fd != -1)
+     {
+-        FILE *f = fdopen( fd, "r" );
++        char magic[4];
++        FILE *f;
++        if (pread( fd, magic, sizeof(magic), 0 ) == sizeof(magic) && !memcmp( magic, "regf", 4 ))
++        {
++            if (!load_regf( key, fd )) set_error( STATUS_REGISTRY_CORRUPT );
++            close( fd );
++            return;
++        }
++        f = fdopen( fd, "r" );
+         if (f)
+         {
+             load_keys( key, NULL, f, -1 );
+@@ -2341,7 +2548,8 @@ DECL_HANDLER(load_registry)
+ 
+     if (!objattr) return;
+ 
+-    if (!thread_single_check_privilege( current, SeRestorePrivilege ))
++    reply->hkey = 0;
++    if (!(req->flags & REG_APP_HIVE) && !thread_single_check_privilege( current, SeRestorePrivilege ))
+     {
+         set_error( STATUS_PRIVILEGE_NOT_HELD );
+         return;
+@@ -2351,9 +2559,15 @@ DECL_HANDLER(load_registry)
+         if (!(parent = get_hkey_obj( objattr->rootdir, 0 ))) return;
+     }
+ 
+-    if ((key = create_key( parent, &name, 0, KEY_WOW64_64KEY, 0, sd )))
++    if (req->flags & REG_APP_HIVE)
++        key = create_key_recursive( parent ? parent : root_key, &name, current_time );
++    else
++        key = create_key( parent, &name, 0, KEY_WOW64_64KEY, 0, sd );
++    if (key)
+     {
+         load_registry( key, req->file );
++        if (!get_error() && (req->flags & REG_APP_HIVE))
++            reply->hkey = alloc_handle( current->process, key, req->access, objattr->attributes );
+         release_object( key );
+     }
+     if (parent) release_object( parent );
+diff --git a/server/request_handlers.h b/server/request_handlers.h
+index 3c51879..b4ecf95 100644
+--- a/server/request_handlers.h
++++ b/server/request_handlers.h
+@@ -1237,7 +1237,11 @@ C_ASSERT( sizeof(struct enum_key_value_reply) == 24 );
+ C_ASSERT( offsetof(struct delete_key_value_request, hkey) == 12 );
+ C_ASSERT( sizeof(struct delete_key_value_request) == 16 );
+ C_ASSERT( offsetof(struct load_registry_request, file) == 12 );
+-C_ASSERT( sizeof(struct load_registry_request) == 16 );
++C_ASSERT( offsetof(struct load_registry_request, flags) == 16 );
++C_ASSERT( offsetof(struct load_registry_request, access) == 20 );
++C_ASSERT( sizeof(struct load_registry_request) == 24 );
++C_ASSERT( offsetof(struct load_registry_reply, hkey) == 8 );
++C_ASSERT( sizeof(struct load_registry_reply) == 16 );
+ C_ASSERT( offsetof(struct unload_registry_request, parent) == 12 );
+ C_ASSERT( offsetof(struct unload_registry_request, attributes) == 16 );
+ C_ASSERT( sizeof(struct unload_registry_request) == 24 );
+diff --git a/server/request_trace.h b/server/request_trace.h
+index d31263c..11be572 100644
+--- a/server/request_trace.h
++++ b/server/request_trace.h
+@@ -1189,9 +1189,16 @@ static void dump_delete_key_value_request( const struct delete_key_value_request
+ static void dump_load_registry_request( const struct load_registry_request *req )
+ {
+     fprintf( stderr, " file=%04x", req->file );
++    fprintf( stderr, ", flags=%08x", req->flags );
++    fprintf( stderr, ", access=%08x", req->access );
+     dump_varargs_object_attributes( ", objattr=", cur_size );
+ }
+ 
++static void dump_load_registry_reply( const struct load_registry_reply *req )
++{
++    fprintf( stderr, " hkey=%04x", req->hkey );
++}
++
+ static void dump_unload_registry_request( const struct unload_registry_request *req )
+ {
+     fprintf( stderr, " parent=%04x", req->parent );
+@@ -3921,7 +3928,7 @@ static const dump_func reply_dumpers[REQ_NB_REQUESTS] =
+     (dump_func)dump_get_key_value_reply,
+     (dump_func)dump_enum_key_value_reply,
+     NULL,
+-    NULL,
++    (dump_func)dump_load_registry_reply,
+     NULL,
+     NULL,
+     NULL,
+@@ -4574,6 +4581,7 @@ static const struct
+     { "PROCESS_IN_JOB",              STATUS_PROCESS_IN_JOB },
+     { "PROCESS_IS_TERMINATING",      STATUS_PROCESS_IS_TERMINATING },
+     { "PROCESS_NOT_IN_JOB",          STATUS_PROCESS_NOT_IN_JOB },
++    { "REGISTRY_CORRUPT",            STATUS_REGISTRY_CORRUPT },
+     { "REPARSE_POINT_NOT_RESOLVED",  STATUS_REPARSE_POINT_NOT_RESOLVED },
+     { "SECTION_TOO_BIG",             STATUS_SECTION_TOO_BIG },
+     { "SEMAPHORE_LIMIT_EXCEEDED",    STATUS_SEMAPHORE_LIMIT_EXCEEDED },

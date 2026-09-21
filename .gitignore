@@ -1,0 +1,6 @@
+/wine-src/
+/fixtures/
+/logs/
+/result
+*.log
+*.tmp
