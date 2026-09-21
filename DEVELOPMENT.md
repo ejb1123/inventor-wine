@@ -34,15 +34,17 @@ value-data cells.
 
 ## Build
 
-On NixOS:
+On NixOS (pinned and recommended):
 
 ```sh
-nix-build custom-wine.nix --no-out-link
+nix build
+nix develop
 ```
 
-Or enter the project environment (which selects the custom Wine):
+The legacy channel-based equivalents are:
 
 ```sh
+nix-build custom-wine.nix
 nix-shell
 wine --version
 ```
