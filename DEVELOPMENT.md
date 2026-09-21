@@ -52,20 +52,26 @@ wine --version
 The first full WoW64 build is large and can take tens of minutes. Subsequent
 builds are cached by Nix.
 
+## Validation status
+
+The first custom Wine package built successfully. A focused test loaded the
+real `Registry.dat` from Inventor 2027's `InvCore.adix`, opened
+`REGISTRY\\MACHINE\\Software\\Autodesk\\Inventor\\RegistryVersion31.0\\RemoveFiles`
+relative to the returned app-hive handle, and read its default `REG_DWORD`
+value (`1`). All calls succeeded and the test exited zero. The test source is
+in `tests/regloadappkey.c`; Autodesk's hive fixture is intentionally excluded.
+
 ## Validation still required
 
 Before treating the patch as production-ready:
 
 1. Add an upstream-style Wine regression test for `RegLoadAppKeyW` and/or
    `NtLoadKeyEx(REG_APP_HIVE)` using a small native `regf` fixture.
-2. Test loading an Autodesk `Registry.dat`, opening
-   `REGISTRY\\MACHINE\\Software` relative to the returned handle, reading a
-   known value, and closing the handle.
-3. Verify same-file handle reuse and automatic unload-on-last-close behavior.
+2. Verify same-file handle reuse and automatic unload-on-last-close behavior.
    The current implementation uses generated hidden keys but does not yet
    implement complete native app-hive lifetime semantics.
-4. Test `REG_PROCESS_APPKEY` isolation and invalid parameter/access cases.
-5. Re-run the Inventor installer and capture the next compatibility failure,
+3. Test `REG_PROCESS_APPKEY` isolation and invalid parameter/access cases.
+4. Re-run the Inventor installer and capture the next compatibility failure,
    if any.
 
 ## Installer notes

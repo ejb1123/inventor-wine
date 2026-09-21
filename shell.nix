@@ -5,6 +5,7 @@ in
 pkgs.mkShell {
   packages = with pkgs; [
     customWine
+    gcc
     winetricks
     p7zip
     cabextract
