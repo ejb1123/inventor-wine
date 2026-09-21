@@ -24,6 +24,10 @@
           file
           binutils
           libfaketime
+          strace
+          shellcheck
+          jq
+          pciutils
           vulkan-tools
         ];
       };

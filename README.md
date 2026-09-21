@@ -13,6 +13,10 @@ See [DEVELOPMENT.md](DEVELOPMENT.md) for the confirmed failure signature,
 implementation details, current limitations, validation checklist, and the
 information needed to continue this work on another machine.
 
+See [OBSERVABILITY.md](OBSERVABILITY.md) for per-run investigation records,
+focused Wine tracing, diagnostic snapshots, operator notes, targeted `strace`,
+and sanitized support bundles.
+
 Experimental, isolated Wine environment for Autodesk Inventor Professional
 2027. The source installers remain in the ignored `installers/` directory and are never
 modified.
@@ -56,6 +60,14 @@ does not launch `Setup.exe` itself. Then run the extracted setup directly:
 
 ```bash
 ./run-setup.sh
+```
+
+Each launcher records the complete attempt below `logs/runs/`; `logs/latest`
+always points to the newest record. For the current CER service investigation,
+use focused tracing:
+
+```bash
+INVENTOR_TRACE_MODE=service ./run-setup.sh
 ```
 
 All scripts derive paths from `$HOME` and the cloned repository. The complete
