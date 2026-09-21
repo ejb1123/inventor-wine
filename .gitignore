@@ -1,6 +1,7 @@
 /wine-src/
 /fixtures/
 /logs/
+/installers/
 /result
 *.log
 *.tmp

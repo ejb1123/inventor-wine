@@ -7,7 +7,7 @@ export WINEPREFIX="${XDG_DATA_HOME:-$HOME/.local/share}/wineprefixes/inventor-20
 export WINEARCH="win64"
 export WINEDEBUG="${WINEDEBUG:--all}"
 
-export INVENTOR_MEDIA_DIR="${INVENTOR_MEDIA_DIR:-$HOME/Downloads}"
+export INVENTOR_MEDIA_DIR="${INVENTOR_MEDIA_DIR:-$PROJECT_DIR/installers}"
 export INVENTOR_BASE_INSTALLER="$INVENTOR_MEDIA_DIR/Inventor_Professional_2027_English_Win_64bit_db_001_002.exe"
 export INVENTOR_BASE_ARCHIVE="$INVENTOR_MEDIA_DIR/Inventor_Professional_2027_English_Win_64bit_db_002_002.7z"
 export INVENTOR_UPDATE_INSTALLER="$INVENTOR_MEDIA_DIR/Inventor_2027.1_Update.exe"

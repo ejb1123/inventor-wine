@@ -14,8 +14,82 @@ implementation details, current limitations, validation checklist, and the
 information needed to continue this work on another machine.
 
 Experimental, isolated Wine environment for Autodesk Inventor Professional
-2027. The source installers remain in `/home/ej/Downloads` and are never
+2027. The source installers remain in the ignored `installers/` directory and are never
 modified.
+
+## Build and resume on a NixOS machine
+
+The Autodesk installers are not stored in Git. Create `installers/` in the
+cloned repository and copy these three files into it before starting (the names
+must match):
+
+```text
+Inventor_Professional_2027_English_Win_64bit_db_001_002.exe
+Inventor_Professional_2027_English_Win_64bit_db_002_002.7z
+Inventor_2027.1_Update.exe
+```
+
+Clone and build the patched Wine package:
+
+```bash
+git clone https://github.com/ejb1123/inventor-wine.git
+cd inventor-wine
+mkdir -p installers
+# Copy the three Autodesk files into ./installers before continuing.
+nix --extra-experimental-features 'nix-command flakes' build -L .#wine
+./result/bin/wine --version
+```
+
+The flake pins Nixpkgs, so another x86_64 NixOS machine builds the same Wine
+source and applies the repository patch automatically. The first build can take
+a while; later rebuilds reuse the Nix store cache.
+
+Create the isolated Wine prefix and extract the installation media:
+
+```bash
+./wineboot.sh
+./run-installer.sh
+```
+
+When the Autodesk bootstrap has finished extracting its files, close it if it
+does not launch `Setup.exe` itself. Then run the extracted setup directly:
+
+```bash
+./run-setup.sh
+```
+
+All scripts derive paths from `$HOME` and the cloned repository. The complete
+`installers/` directory is ignored by Git, so the large copyrighted Autodesk
+files cannot be committed accidentally. To use another installer directory,
+set it for each command, for example:
+
+```bash
+INVENTOR_MEDIA_DIR=/path/to/installers ./run-installer.sh
+```
+
+The dedicated prefix is stored at
+`~/.local/share/wineprefixes/inventor-2027`; installation logs produced by the
+launchers are stored under `./logs`.
+
+### Current CER service timeout workaround
+
+The custom Wine patch gets the installer past Autodesk's ADIX binary-registry
+hive failure. The next known failure is Autodesk CER Service: Wine defaults to
+only 10 seconds for a Windows service to connect to the service manager. Set a
+120-second timeout in the prefix before retrying setup:
+
+```bash
+nix --extra-experimental-features 'nix-command flakes' develop --command \
+  wine reg add 'HKLM\System\CurrentControlSet\Control' \
+  /v ServicesPipeTimeout /t REG_SZ /d 120000 /f
+nix --extra-experimental-features 'nix-command flakes' develop --command \
+  wineserver -k
+./run-setup.sh
+```
+
+`ServicesPipeTimeout` is measured in milliseconds. Restarting `wineserver` is
+required because Wine's service manager reads this setting when it starts. This
+is presently a diagnostic workaround, not yet a confirmed fix for CER.
 
 ## Baseline
 
