@@ -18,8 +18,8 @@ focused Wine tracing, diagnostic snapshots, operator notes, targeted `strace`,
 and sanitized support bundles.
 
 Experimental, isolated Wine environment for Autodesk Inventor Professional
-2027. The source installers remain in the ignored `installers/` directory and are never
-modified.
+2027. The source installers remain in the ignored `installers/` directory and
+are never modified.
 
 ## Build and resume on a NixOS machine
 
@@ -83,6 +83,68 @@ The dedicated prefix is stored at
 `~/.local/share/wineprefixes/inventor-2027`; installation logs produced by the
 launchers are stored under `./logs`.
 
+## Observe and preserve investigations
+
+`wineboot.sh`, `run-installer.sh`, and `run-setup.sh` automatically create a
+durable run directory such as `logs/runs/20260921-120000-setup`. The
+`logs/latest` symlink always selects the newest run. Each record includes:
+
+- The exact command, Git revision, dirty state, Wine build, Nix platform,
+  prefix, trace mode, fake date, and installer hashes.
+- Complete Wine output and Autodesk logs changed during the attempt.
+- Process, CPU, memory, disk, changed-file, and installer-progress samples.
+- Before-and-after Autodesk registry, package, service, and prefix inventories.
+- Machine-readable status and events, operator notes, prefix differences, and
+  an automatically extracted failure summary.
+
+Inspect a running or completed attempt without disturbing it:
+
+```bash
+./status.sh
+```
+
+Attach an observation that should survive beyond the current terminal or chat:
+
+```bash
+./record-note.sh 'CER service dialog appeared with error 1053'
+```
+
+Capture a standalone system, GPU, Vulkan, Wine, prefix, registry, and service
+diagnostic record:
+
+```bash
+./diagnose.sh
+```
+
+Trace modes can be selected for any launcher. `service` is recommended for the
+current CER investigation; `full` can produce extremely large logs:
+
+```bash
+INVENTOR_TRACE_MODE=normal ./run-setup.sh
+INVENTOR_TRACE_MODE=service ./run-setup.sh
+INVENTOR_TRACE_MODE=full ./run-setup.sh
+```
+
+After isolating one failing Windows executable, capture its Wine activity and
+Linux system calls directly:
+
+```bash
+./trace-target.sh 'C:\Program Files\Autodesk\Autodesk CER\service\cer_service.exe'
+```
+
+Create a sanitized archive of the latest attempt for later investigation or
+transfer to another machine:
+
+```bash
+./support-bundle.sh
+```
+
+The bundle excludes installers, prefixes, executable files, registry hives,
+crash dumps, raw `strace`, and oversized files. It also redacts common secrets
+and home-directory names. Review the resulting archive manually before sharing
+it publicly. See [OBSERVABILITY.md](OBSERVABILITY.md) for complete details and
+custom tracing examples.
+
 ### Current CER service timeout workaround
 
 The custom Wine patch gets the installer past Autodesk's ADIX binary-registry
@@ -105,7 +167,7 @@ is presently a diagnostic workaround, not yet a confirmed fix for CER.
 
 ## Baseline
 
-- Wine staging 11.8 from the current NixOS channel
+- Wine staging 11.8 from the Nixpkgs revision pinned by `flake.lock`
 - Dedicated 64-bit prefix at
   `/home/ej/.local/share/wineprefixes/inventor-2027`
 - Base installer SHA-256:
