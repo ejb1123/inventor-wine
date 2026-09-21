@@ -9,6 +9,10 @@ The Wine changes live in
 applies them reproducibly to the Nixpkgs Wine source. Run commands through
 `nix-shell` (the supplied launcher scripts do this automatically).
 
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the confirmed failure signature,
+implementation details, current limitations, validation checklist, and the
+information needed to continue this work on another machine.
+
 Experimental, isolated Wine environment for Autodesk Inventor Professional
 2027. The source installers remain in `/home/ej/Downloads` and are never
 modified.
