@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /home/ej/Projects/inventor-wine
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 source ./env.sh
-exec nix-shell ./shell.nix --run 'wineboot --init'
+exec nix --extra-experimental-features 'nix-command flakes' develop --command wineboot --init

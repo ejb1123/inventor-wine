@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd /home/ej/Projects/inventor-wine
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 source ./env.sh
 
-export setup='/home/ej/.local/share/wineprefixes/inventor-2027/drive_c/Autodesk/WI/Inventor_Professional_2027_English_Win_64bit_db_002_002 (1)/image/Setup.exe'
+export setup="$WINEPREFIX/drive_c/Autodesk/WI/Inventor_Professional_2027_English_Win_64bit_db_002_002 (1)/image/Setup.exe"
 export WINEPATH='C:\Autodesk\WI\Inventor_Professional_2027_English_Win_64bit_db_002_002 (1)\image\ODIS\odis.bs.win;C:\Autodesk\WI\Inventor_Professional_2027_English_Win_64bit_db_002_002 (1)\image\ODIS\odis.bs.wx'
 timestamp="$(date +%Y%m%d-%H%M%S)"
-log="/home/ej/Projects/inventor-wine/logs/setup-$timestamp.log"
+log="$PROJECT_DIR/logs/setup-$timestamp.log"
 
 # The Autodesk installer writes detailed ODIS logs of its own. Wine output is
 # restricted to errors so those logs remain the primary diagnostic source.
@@ -21,4 +21,6 @@ export WINEDEBUG="+timestamp,+pid,+tid,err+all"
 export INVENTOR_SETUP_DATE="${INVENTOR_SETUP_DATE:-2026-07-01 12:00:00}"
 # Start a fresh wineserver inside the same faketime environment. Reusing a
 # real-time wineserver makes Electron's UI process exit before creating a window.
-nix-shell ./shell.nix --run 'faketime "$INVENTOR_SETUP_DATE" bash -c '\''wineserver -p; exec wine "$setup"'\''' 2>&1 | tee "$log"
+nix --extra-experimental-features 'nix-command flakes' develop --command \
+  faketime "$INVENTOR_SETUP_DATE" bash -c 'wineserver -p; exec wine "$setup"' \
+  2>&1 | tee "$log"
