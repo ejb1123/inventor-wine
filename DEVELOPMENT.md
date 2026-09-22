@@ -1,5 +1,8 @@
 # Development handoff
 
+See [ISSUES.md](ISSUES.md) for the current error backlog, confirmed cancellation
+chain, and preserved evidence from the 2026-09-21 installation attempt.
+
 ## Goal
 
 Run Autodesk Inventor 2027 under Wine on NixOS/Wayland, with fixes implemented
@@ -76,15 +79,51 @@ Before treating the patch as production-ready:
 
 ## Installer notes
 
-The Autodesk signing certificate encountered during this investigation had
-expired on 2026-08-14. Wine did not decode the Authenticode timestamp used by
-the installer, so `run-setup.sh` starts the wineserver under `libfaketime` with
-the default date `2026-07-01`. Starting only the installer under fake time is
-not sufficient; an already-running wineserver retains real time.
+Inventor Core's signing certificate expires on 2026-08-14, but the material
+libraries use an older certificate expiring on 2025-09-26. The setup launcher
+now uses `2025-09-01`, inside both certificates' validity periods. Autodesk's
+own MSIX reader validates all three material packages at that date; July 2026
+reproduces `0x8BAD0042` for Material Library 5. Signature validation remains
+enabled and the host clock is unchanged.
+
+The installer and its server both run under `libfaketime`. A companion server
+from `custom-wineserver.nix` adds `WINE_DISABLE_NTSYNC=1` to opt out of kernel
+waits for setup. A 200 ms absolute wait otherwise expires immediately against
+the host's real clock. The fallback waited approximately 199 ms in the isolated
+probe. Only the server is rebuilt, using the same source/protocol patches and
+runtime data as the existing Wine package. Both Nix shells set `WINESERVER`;
+`env.sh` also recognizes a local `result-server` build.
 
 The previous installation attempt reached roughly 3%, installed several
 shared components, then failed in ADIX registry loading and rolled back. The
 Wine prefix and Autodesk logs should be preserved when continuing diagnosis.
+
+## Resume on current machine (2026-09-21)
+
+The base media extracted successfully. The bootstrap's "Run installer" action
+failed with `c0000135` because it did not find the bundled wxWidgets DLLs.
+`run-setup.sh` now discovers the extracted folder rather than assuming the
+previous machine's ` (1)` suffix and derives `WINEPATH` from that folder.
+
+Initial setup launches then reported `nodrv_CreateWindow` and an explorer
+startup failure with Mesa EGL errors on this NVIDIA host. Unsetting
+`WAYLAND_DISPLAY` did not resolve this. Explicitly disabling `winewayland.drv`
+did: run `20260921-140034-setup` reached the ODIS UI, whose log reported
+`mainWindow loaded` and UI initialization. The launcher now applies that
+override and preserves monotonic timers under libfaketime. The user confirmed
+the installer window is visible and installation is running. `Install.log`
+records the start of Inventor Core 2027 installation; completion remains pending.
+
+Per-package logs from that attempt identify an earlier failure than Anark:
+Material Library 5 and both material image libraries return `0x8bad0042`
+(`CertNotTrusted`, installer code 4005) in `PopulatePackageInfo`. ODIS requests
+cancellation after the first material-library failure. Anark's later code 4000
+is cancellation, not an independent root cause; its package log explicitly
+says the installation was cancelled. Core also records a cancellation request
+while in `PopulatePackageInfo`, so active processes/CPU are not evidence of
+successful installation progress. Shared Components additionally returned
+code 18 / exit status 2; its underlying cause is not yet established. The
+July 2026 fake date has not solved trust validation for these material packages.
 
 ## Repository hygiene
 
@@ -92,3 +131,19 @@ Do not commit Autodesk installers, extracted payloads, Wine prefixes, logs, or
 registry fixtures. They may be large, licensed, machine-specific, or contain
 user data. `.gitignore` excludes the local working source tree, fixtures, logs,
 and Nix result symlink.
+
+## 2026-09-21 completed installation and first launch
+
+`20260921-161005-setup` completed successfully, including Electrical Catalog
+Browser. The decisive performance fix was native MSXML6: Core package reading
+fell from minutes to 609 ms in the full installer (382 ms in the isolated probe).
+`prepare-compat.sh` now installs both the archive bridge and the verified
+Microsoft XML runtime. `prepare-materials.sh` completes a separate local bundle
+of the original material packages at September 2025 before the full setup at
+July 2026. This commits the package-file records that cancellation had lost.
+
+`./run-inventor.sh` starts Inventor at the real date and records logs. First
+launch reached the rendered Autodesk license/sign-in screen, with Licensing
+Service RUNNING. The window is left open for the user to authenticate. No model
+has been opened; graphics and post-authentication operation remain unverified.
+See ISSUES.md for screenshots, backups, fixes, and residual startup messages.

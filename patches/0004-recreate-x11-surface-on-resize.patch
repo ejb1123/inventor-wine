@@ -1,0 +1,19 @@
+From: Inventor Wine compatibility research
+Subject: [PATCH] winex11: Recreate a window surface when its rectangle changes.
+
+A surface for the same X window still needs a new backing image after resize.
+EXPERIMENT ONLY: rejected by repeated maximize tests on 2026-09-22.
+The extra check did not prevent stale shape dimensions. Not in the normal build.
+
+--- a/dlls/winex11.drv/bitblt.c
++++ b/dlls/winex11.drv/bitblt.c
+@@ -1974,7 +1974,8 @@ BOOL X11DRV_CreateWindowSurface( HWND hwnd, BOOL layered, const RECT *surface_rect,
+     if ((previous = *surface) && previous->funcs == &x11drv_surface_funcs)
+     {
+         Window window = get_x11_surface(previous)->window;
+-        if (data->whole_window == window && !enable_direct_drawing( data, layered )) goto done; /* use default surface */
++        if (data->whole_window == window && EqualRect( &previous->rect, surface_rect ) &&
++            !enable_direct_drawing( data, layered )) goto done; /* reuse matching surface */
+         /* re-create window surface is window has changed, which can happen when changing visual */
+         TRACE( "re-creating hwnd %p surface with new window %lx\n", data->hwnd, data->whole_window );
+     }

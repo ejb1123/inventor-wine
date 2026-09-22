@@ -1,0 +1,51 @@
+--- a/server/process.c
++++ b/server/process.c
+@@ -63,6 +63,7 @@
+ #include "request.h"
+ #include "user.h"
+ #include "security.h"
++#include "unicode.h"
+ 
+ /* process object */
+ 
+@@ -1525,6 +1526,22 @@
+     release_object( process );
+ }
+ 
++/* Compatibility reporting only: moving the service manager to a real separate
++ * session would also require converting Wine's service startup rendezvous.
++ * Go and .NET service detection expect services.exe to report session zero. */
++static unsigned int get_reported_session_id( struct process *process )
++{
++    static const WCHAR path[] = {'C',':','\\','w','i','n','d','o','w','s','\\',
++        's','y','s','t','e','m','3','2','\\','s','e','r','v','i','c','e','s','.','e','x','e'};
++    const char *enabled = getenv( "WINE_SERVICE_SESSION_ZERO" );
++
++    if (enabled && !strcmp( enabled, "1" ) && process->imagelen >= sizeof(path)
++        && !memicmp_strW( process->image + (process->imagelen - sizeof(path)) / sizeof(WCHAR),
++                         path, sizeof(path) ))
++        return 0;
++    return process->session_id;
++}
++
+ /* fetch information about a process */
+ DECL_HANDLER(get_process_info)
+ {
+@@ -1542,7 +1559,7 @@
+         reply->peb              = process->peb;
+         reply->start_time       = process->start_time;
+         reply->end_time         = process->end_time;
+-        reply->session_id       = process->session_id;
++        reply->session_id       = get_reported_session_id( process );
+         reply->machine          = process->machine;
+         if (get_reply_max_size())
+         {
+@@ -2093,7 +2110,7 @@
+         process_info->priority = process->priority;
+         process_info->pid = process->id;
+         process_info->parent_pid = process->parent_id;
+-        process_info->session_id = process->session_id;
++        process_info->session_id = get_reported_session_id( process );
+         process_info->handle_count = get_handle_table_count(process);
+         process_info->unix_pid = process->unix_pid;
+         pos += sizeof(*process_info);

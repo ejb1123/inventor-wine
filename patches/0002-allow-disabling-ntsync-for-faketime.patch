@@ -1,0 +1,28 @@
+From: Inventor Wine development <noreply@localhost>
+Subject: [PATCH] server: Allow opting out of ntsync for process-local fake clocks.
+
+The kernel does not share libfaketime's realtime clock. Absolute ntsync
+deadlines expressed against the adjusted Windows clock can expire immediately.
+Allow a setup-only opt-out, preserving the default for normal Wine use.
+
+--- a/server/inproc_sync.c
++++ b/server/inproc_sync.c
+@@ -23,3 +23,5 @@
+ #include <assert.h>
+ #include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
+ #include <stdio.h>
+@@ -47,7 +49,12 @@
+ int get_inproc_device_fd(void)
+ {
+     static int fd = -2;
+-    if (fd == -2) fd = open( "/dev/ntsync", O_CLOEXEC | O_RDONLY );
++    if (fd == -2)
++    {
++        const char *disable = getenv( "WINE_DISABLE_NTSYNC" );
++        fd = disable && !strcmp( disable, "1" ) ? -1 :
++             open( "/dev/ntsync", O_CLOEXEC | O_RDONLY );
++    }
+     return fd;
+ }

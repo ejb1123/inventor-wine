@@ -1,0 +1,30 @@
+From: Inventor Wine compatibility research
+Subject: [PATCH] winex11: Synchronize window shape on a replacement surface first flush.
+
+A newly created unshaped surface has no shape bitmap to clear, but the X window
+can still carry a shape from its previous surface. Synchronize once even when
+the new surface reports no shape change.
+
+--- a/dlls/winex11.drv/bitblt.c
++++ b/dlls/winex11.drv/bitblt.c
+@@ -1589,6 +1589,7 @@
+     GC                    gc;
+     struct x11drv_image  *image;
+     BOOL                  byteswap;
++    BOOL                  shape_initialized;
+ };
+ 
+ static struct x11drv_window_surface *get_x11_surface( struct window_surface *surface )
+@@ -1829,8 +1830,10 @@
+                 ptr[x] |= alpha_bits;
+     }
+ 
+-    if (shape_changed)
+-    {
++    /* A replacement surface must also clear the previous surface's shape. */
++    if (shape_changed || !surface->shape_initialized)
++    {
++        surface->shape_initialized = TRUE;
+ #ifdef HAVE_LIBXSHAPE
+         if (!shape_bits)
+             XShapeCombineMask( gdi_display, surface->window, ShapeBounding, 0, 0, None, ShapeSet );

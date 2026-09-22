@@ -3,7 +3,14 @@
 /logs/
 /installers/
 /result
+/result-server
+/result-compat
+/result-winex11
+/result-winex11-test
 *.log
 *.tmp
 /tests/*.exe
 /tests/*.exe.so
+
+# Local confidential material must never be published.
+/confidential/

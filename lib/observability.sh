@@ -29,7 +29,7 @@ obs_wine() {
 }
 
 obs_wineserver() {
-  local server_bin="$PROJECT_DIR/result/bin/wineserver"
+  local server_bin="${WINESERVER:-$PROJECT_DIR/result/bin/wineserver}"
   if [[ ! -x "$server_bin" ]]; then server_bin=$(command -v wineserver 2>/dev/null || true); fi
   [[ -n "$server_bin" ]] || return 127
   "$server_bin" "$@"
@@ -37,7 +37,7 @@ obs_wineserver() {
 
 obs_set_trace_mode() {
   case "${INVENTOR_TRACE_MODE:-normal}" in
-    normal)  export WINEDEBUG='+timestamp,+pid,+tid,err+all' ;;
+    normal)  export WINEDEBUG='-all,+timestamp,+pid,+tid,err+all' ;;
     service) export WINEDEBUG='+timestamp,+pid,+tid,+service,+process,+loaddll,+seh,+registry,err+all,warn+all' ;;
     full)    export WINEDEBUG='+timestamp,+pid,+tid,trace+all' ;;
     custom)  : ;; # Preserve caller-supplied WINEDEBUG.
@@ -189,6 +189,9 @@ obs_init() {
     printf 'project_dir=%s\nprefix=%s\nhost=%s\nuser=%s\n' "$PROJECT_DIR" "$WINEPREFIX" "$(hostname)" "$USER"
     printf 'nix_system=%s\ngit_commit=%s\ngit_dirty=%s\n' "$nix_system" "$git_commit" "${git_dirty//$'\n'/;}"
     printf 'wine_path=%s\nwine_version=%s\n' "$wine_path" "$wine_version"
+    printf 'wineserver=%s\nwine_disable_ntsync=%s\nwine_dll_overrides=%s\n' \
+      "${WINESERVER:-$PROJECT_DIR/result/bin/wineserver}" "${WINE_DISABLE_NTSYNC:-0}" "${WINEDLLOVERRIDES-}"
+    printf 'wine_service_session_zero=%s\n' "${WINE_SERVICE_SESSION_ZERO:-0}"
     printf 'wine_debug=%s\nsetup_date=%s\ncommand=' "${WINEDEBUG-}" "${INVENTOR_SETUP_DATE-}"
     printf '%q ' "$@"
     printf '\nbase_installer_sha256=%s\nbase_archive_sha256=%s\nupdate_installer_sha256=%s\n' \

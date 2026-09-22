@@ -9,6 +9,10 @@ The Wine changes live in
 applies them reproducibly to the Nixpkgs Wine source. Run commands through
 `nix-shell` (the supplied launcher scripts do this automatically).
 
+`custom-wineserver.nix` also builds a matching server with the setup-only
+kernel-synchronization opt-out in patch 0002. See [ISSUES.md](ISSUES.md) for
+compatibility findings and [tests/README.md](tests/README.md) for focused validation.
+
 See [DEVELOPMENT.md](DEVELOPMENT.md) for the confirmed failure signature,
 implementation details, current limitations, validation checklist, and the
 information needed to continue this work on another machine.
@@ -41,6 +45,7 @@ cd inventor-wine
 mkdir -p installers
 # Copy the three Autodesk files into ./installers before continuing.
 nix --extra-experimental-features 'nix-command flakes' build -L .#wine
+nix --extra-experimental-features 'nix-command flakes' build -L .#wineserver -o result-server
 ./result/bin/wine --version
 ```
 
@@ -59,8 +64,62 @@ When the Autodesk bootstrap has finished extracting its files, close it if it
 does not launch `Setup.exe` itself. Then run the extracted setup directly:
 
 ```bash
+./prepare-compat.sh
+./prepare-materials.sh
 ./run-setup.sh
 ```
+
+The setup launcher finds the extracted Inventor folder automatically and adds
+its bundled ODIS DLL directories to Wine's search path. If the bootstrap's
+"Run installer" button closes without showing setup, use this launcher. It
+requires exactly one matching extracted setup folder and reports any ambiguity.
+Setup uses X11/XWayland as a desktop workaround on the current NVIDIA host.
+Its certificate-date workaround preserves real
+monotonic timers and defaults to `2026-07-01`, within the shared validity period
+of the Inventor Core and RSA/REX signing certificates. The development
+shell selects a companion Wine server built from the same patched source and
+protocol. During setup, `WINE_DISABLE_NTSYNC=1` selects server-managed waits:
+kernel absolute deadlines otherwise use the host's real date and expire early.
+Normal Wine use keeps kernel synchronization enabled by default.
+
+The project also enables `WINE_SERVICE_SESSION_ZERO=1` on the companion server.
+This narrowly reports session zero for `services.exe`, allowing Go-based
+Autodesk services to detect their service context. It does not implement full
+Windows session isolation or change process credentials. CER and Licensing
+reach RUNNING in isolated tests with their original executables.
+`prepare-compat.sh` supplies the missing `tar.exe` operation used by the
+Electrical Catalog installer, forwarding its extraction to Nix's `bsdtar`.
+It supports that specific command form, not the complete Windows tar CLI.
+It also runs `prepare-msxml.sh`, which downloads Microsoft's XML 6 runtime,
+verifies the checksum from the Winetricks recipe, and preserves the previous
+DLLs. Setup selects this runtime because Wine's built-in XML reader takes
+minutes to read large ADIX packages; the native runtime read Inventor Core
+in 382 ms with full validation in the isolated comparison.
+
+There is **no single certificate-valid date for every bundled package**:
+materials expire September 26, 2025, while RSA/REX start September 29.
+`prepare-materials.sh` installs the three original material packages at a
+September 2025 date using Autodesk's installer and full signature validation.
+A separate local bundle owns these shared packages so ODIS commits their file
+records and retains them. A canceled full setup does not reliably commit those
+records. The main setup then uses July 2026. This sequence completed the full
+Inventor installation on this machine, including Electrical Catalog Browser.
+Application operation is a separate validation step. See [ISSUES.md](ISSUES.md)
+for current outcomes.
+
+After setup completes, close it and stop its dedicated Wine server to leave
+the simulated installer date before launching the application:
+
+```bash
+source ./env.sh
+"$WINESERVER" -k
+"$WINESERVER" -w
+./run-inventor.sh
+```
+
+Subsequent launches use `./run-inventor.sh` directly. It starts the companion
+server and records application logs at the real date. Do not stop the server
+while an installer or Inventor session is still doing work.
 
 Each launcher records the complete attempt below `logs/runs/`; `logs/latest`
 always points to the newest record. For the current CER service investigation,
@@ -145,25 +204,14 @@ and home-directory names. Review the resulting archive manually before sharing
 it publicly. See [OBSERVABILITY.md](OBSERVABILITY.md) for complete details and
 custom tracing examples.
 
-### Current CER service timeout workaround
+### CER and Licensing service startup
 
-The custom Wine patch gets the installer past Autodesk's ADIX binary-registry
-hive failure. The next known failure is Autodesk CER Service: Wine defaults to
-only 10 seconds for a Windows service to connect to the service manager. Set a
-120-second timeout in the prefix before retrying setup:
-
-```bash
-nix --extra-experimental-features 'nix-command flakes' develop --command \
-  wine reg add 'HKLM\System\CurrentControlSet\Control' \
-  /v ServicesPipeTimeout /t REG_SZ /d 120000 /f
-nix --extra-experimental-features 'nix-command flakes' develop --command \
-  wineserver -k
-./run-setup.sh
-```
-
-`ServicesPipeTimeout` is measured in milliseconds. Restarting `wineserver` is
-required because Wine's service manager reads this setting when it starts. This
-is presently a diagnostic workaround, not yet a confirmed fix for CER.
+Increasing `ServicesPipeTimeout` was an earlier diagnostic suggestion, not a
+confirmed fix. The current tests identify Go service-context detection as the
+blocker: services start in interactive mode because Wine reports session one
+for their `services.exe` parent. Use the companion server and the project's
+`WINE_SERVICE_SESSION_ZERO=1` setting described above. Both Autodesk services
+reach RUNNING in isolated tests without increasing the default timeout.
 
 ## Baseline
 
@@ -200,3 +248,9 @@ The extracted `Setup.exe` uses private Win32 assemblies under
 assemblies through the application's `probing privatePath="ODIS"` setting, so
 `run-setup.sh` adds both directories to `WINEPATH`. This leaves the signed
 Autodesk binaries unchanged.
+# Local research configuration
+
+The separate offline research installation, verified model open/save test, and
+graphics compatibility settings are documented in [RESEARCH-SETUP.md](RESEARCH-SETUP.md).
+Use `./run-research-contained.sh` for that copy. The original launcher remains
+`./run-inventor.sh`. DirectX-to-Vulkan findings are in [DX12-RESEARCH.md](DX12-RESEARCH.md).
