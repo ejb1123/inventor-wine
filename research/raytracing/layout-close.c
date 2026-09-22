@@ -1,0 +1,4 @@
+#include <windows.h>
+static BOOL CALLBACK child(HWND h,LPARAM x){ WCHAR cls[160],title[200];char b[1000];RECT r;DWORD pid;GetClassNameW(h,cls,160);GetWindowTextW(h,title,200);GetWindowRect(h,&r);GetWindowThreadProcessId(h,&pid);wsprintfA(b,"%p parent=%p pid=%lu visible=%d style=%08lx ex=%08lx rect=%ld,%ld,%ld,%ld class=%S title=%S\r\n",h,GetParent(h),pid,IsWindowVisible(h),GetWindowLongW(h,GWL_STYLE),GetWindowLongW(h,GWL_EXSTYLE),r.left,r.top,r.right,r.bottom,cls,title);DWORD n;WriteFile(GetStdHandle(STD_OUTPUT_HANDLE),b,lstrlenA(b),&n,0);return TRUE;}
+static BOOL CALLBACK top(HWND h,LPARAM x){WCHAR title[200];GetWindowTextW(h,title,200);if(!lstrcmpW(title,L"Autodesk Inventor Professional 2027")){child(h,0); PostMessageW(h,WM_SYSCOMMAND,SC_CLOSE,0);}return TRUE;}
+void mainCRTStartup(void){EnumWindows(top,0);ExitProcess(0);}

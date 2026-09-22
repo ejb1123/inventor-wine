@@ -1,0 +1,13 @@
+; Synthetic validation reproducer, not an Autodesk shader.
+OpCapability Shader
+OpMemoryModel Logical GLSL450
+OpEntryPoint GLCompute %main "main"
+OpExecutionMode %main LocalSize 1 1 1
+%void = OpTypeVoid
+%function = OpTypeFunction %void
+%float = OpTypeFloat 32
+%vec12 = OpTypeVector %float 12
+%main = OpFunction %void None %function
+%entry = OpLabel
+OpReturn
+OpFunctionEnd

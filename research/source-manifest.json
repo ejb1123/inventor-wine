@@ -1,0 +1,367 @@
+[
+  {
+    "path": "research/dx12-research/probe-session.sh",
+    "original_path": "fixtures/dx12-research/probe-session.sh",
+    "original_sha256": "f8882490f1e5170ee99de52ce936133fc3c55aa9c02acdbacff66b8843f12dc6"
+  },
+  {
+    "path": "research/dx12-research/probe.c",
+    "original_path": "fixtures/dx12-research/probe.c",
+    "original_sha256": "d9778206c27c7f11883965b9fcb52f8414bf7c855fe30b235ba70d0fc53ad4e0"
+  },
+  {
+    "path": "research/dx12-research/run-probe.sh",
+    "original_path": "fixtures/dx12-research/run-probe.sh",
+    "original_sha256": "782120f91cdfa463a9d51015db198ab409c790d0f66e6c38adba48158c488adf"
+  },
+  {
+    "path": "research/dx12-integration/open-gear.c",
+    "original_path": "fixtures/dx12-integration/open-gear.c",
+    "original_sha256": "e57d7e06879a4766a5550ad1af79ab2469995db4e4985b60e68cd8ff4ddfceac"
+  },
+  {
+    "path": "research/dx12-integration/reverse-zoom.c",
+    "original_path": "fixtures/dx12-integration/reverse-zoom.c",
+    "original_sha256": "17084985cd14cc4e3891de268c19ac73ef9e9c09e817286d24ee3e4a8c17d614"
+  },
+  {
+    "path": "research/dx12-integration/select.c",
+    "original_path": "fixtures/dx12-integration/select.c",
+    "original_sha256": "2028d44d8b24a377b6da73e1d162b3e928550901dcff70b89a92f38086ccb614"
+  },
+  {
+    "path": "research/dx12-integration/status.c",
+    "original_path": "fixtures/dx12-integration/status.c",
+    "original_sha256": "2b40327aa45a32fece178912f777f43c38cfdf7faaaf38ae81e534d6e2d7ec6e"
+  },
+  {
+    "path": "research/dx12-integration/validate.c",
+    "original_path": "fixtures/dx12-integration/validate.c",
+    "original_sha256": "1042385667cdf59676c055a674e3953077446a7506cb9dc4c2a1761fbd1e1197"
+  },
+  {
+    "path": "research/dx12-integration/view-enums.c",
+    "original_path": "fixtures/dx12-integration/view-enums.c",
+    "original_sha256": "9b51a0564594ea6753bf9c8d70e86e7c7786cd8502926f314170577adff3cd37"
+  },
+  {
+    "path": "research/home-debug/cdp_browser.py",
+    "original_path": "fixtures/home-debug/cdp_browser.py",
+    "original_sha256": "c8cd8915b161855422e57b4d90a38cb18e38b701447449eab0dc9bde901ea392"
+  },
+  {
+    "path": "research/home-debug/cdp_method.py",
+    "original_path": "fixtures/home-debug/cdp_method.py",
+    "original_sha256": "f34a4dbb0603dd6e8689bab809c086bc50852cbf4828a11db02dfa514dd467c4"
+  },
+  {
+    "path": "research/home-debug/cdp_probe.py",
+    "original_path": "fixtures/home-debug/cdp_probe.py",
+    "original_sha256": "b814acb3ec7f88189e7a23322eb33891c34dfc437d38d64b16ce627d37a734ed"
+  },
+  {
+    "path": "research/home-debug/click-new.c",
+    "original_path": "fixtures/home-debug/click-new.c",
+    "original_sha256": "4f07dfe23177c51feef195ef1d3c5aa76445d54c4f8d17c915505f2ee6b6aff4"
+  },
+  {
+    "path": "research/home-debug/detach.c",
+    "original_path": "fixtures/home-debug/detach.c",
+    "original_sha256": "96a72c1181fdee2aabe5bfc5f20f27fa9256555a8f0f3ac1bf6b74e69d4e3662"
+  },
+  {
+    "path": "research/home-debug/inject-probe.c",
+    "original_path": "fixtures/home-debug/inject-probe.c",
+    "original_sha256": "8a1e39c897f58eda16a9a28619ebf2da5025f77ae37a0de0d1c7c905ebf8383a"
+  },
+  {
+    "path": "research/home-debug/minimal.c",
+    "original_path": "fixtures/home-debug/minimal.c",
+    "original_sha256": "0d08cb20907b937cf48281429b66eb37481b161ac6da7e6f2bb816ca53b1aa1a"
+  },
+  {
+    "path": "research/home-debug/present-probe.c",
+    "original_path": "fixtures/home-debug/present-probe.c",
+    "original_sha256": "c53678534391c9e062da2c35379af4ea032cd8ce5b95fa9777bb0ab9856b187a"
+  },
+  {
+    "path": "research/home-debug/reparent.c",
+    "original_path": "fixtures/home-debug/reparent.c",
+    "original_sha256": "010b67939b639688b07d69d818f8be2f51aaa82c98e7d0b8ee0f6ef8e2033f8f"
+  },
+  {
+    "path": "research/home-debug/trace_frames.py",
+    "original_path": "fixtures/home-debug/trace_frames.py",
+    "original_sha256": "38a959af5101e571c9207fc429dee52959e2b283fab9110d4cecf613c17c6fdb"
+  },
+  {
+    "path": "research/home-debug/unlayer.c",
+    "original_path": "fixtures/home-debug/unlayer.c",
+    "original_sha256": "25b90704f23925851cafcb90e59ae367a99d2b003d6f0c0ec95620a77c314371"
+  },
+  {
+    "path": "research/home-debug/windows.c",
+    "original_path": "fixtures/home-debug/windows.c",
+    "original_sha256": "ec5150f46fcd78c84a088b88e8224a0cbbdd2c45bdccf1310882cc1b85dd55b5"
+  },
+  {
+    "path": "research/dialog-style/configure.c",
+    "original_path": "fixtures/dialog-style/configure.c",
+    "original_sha256": "c30ecfa7233335feeef491d6fbb13ad21f16c029f42c3359af4300cc486d247d"
+  },
+  {
+    "path": "research/dialog-style/prepare.py",
+    "original_path": "fixtures/dialog-style/prepare.py",
+    "original_sha256": "803ef908e92504a9b9295434032ee10dca6756820a79a0f8da3b3ab240f59eaa"
+  },
+  {
+    "path": "research/research-runtime/cube.c",
+    "original_path": "fixtures/research-runtime/cube.c",
+    "original_sha256": "987d8d0521d23722dba47af36b16f619eda1b473816c1e29b672231e07956e80"
+  },
+  {
+    "path": "research/research-runtime/enums.c",
+    "original_path": "fixtures/research-runtime/enums.c",
+    "original_sha256": "adbc729fce1f1846d6e24210354ef252cbe412a60fde6ef8e1f1a577548e942a"
+  },
+  {
+    "path": "research/research-runtime/gear.c",
+    "original_path": "fixtures/research-runtime/gear.c",
+    "original_sha256": "26bccdd456dbd0cceb914d04a44f99a98079e045331a5d501b3f0b959664d781"
+  },
+  {
+    "path": "research/research-runtime/hardware.c",
+    "original_path": "fixtures/research-runtime/hardware.c",
+    "original_sha256": "151f3a6ad1539d72e01f1c91c79a67d281361c494797d95e506e98f4aacd5487"
+  },
+  {
+    "path": "research/research-runtime/restart-check.c",
+    "original_path": "fixtures/research-runtime/restart-check.c",
+    "original_sha256": "1d35ec8ba6c90fe4ba4dc1a69b5c30a0fcd5746e3dd6db8c002f7ee25cc6df5d"
+  },
+  {
+    "path": "research/research-runtime/save-restart.c",
+    "original_path": "fixtures/research-runtime/save-restart.c",
+    "original_sha256": "417c2d5247047ad0e87e4bf9de2b74147527680d86831c35b5c07777aad0b43a"
+  },
+  {
+    "path": "research/research-runtime/set-dx11.c",
+    "original_path": "fixtures/research-runtime/set-dx11.c",
+    "original_sha256": "9d3e0cc9aa28b36250e82ab3566d22226d77c29918a5e0ae8f650d2c6c0fa76f"
+  },
+  {
+    "path": "research/research-runtime/set-dx12.c",
+    "original_path": "fixtures/research-runtime/set-dx12.c",
+    "original_sha256": "60e85b34047abcfba8b7eaab0f90f6fdbd3095288cf38690447e5cd31ac22b0a"
+  },
+  {
+    "path": "research/research-runtime/smoke.c",
+    "original_path": "fixtures/research-runtime/smoke.c",
+    "original_sha256": "6a596f04ce655a9e59287487285bbd4b3808e4307ee9209e96bd71886447b78b"
+  },
+  {
+    "path": "research/raytracing/aurora-probe.c",
+    "original_path": "fixtures/raytracing/aurora-probe.c",
+    "original_sha256": "2c6e36628e81be0b94f98ac98b19ad25ecb0474dc03b05943a8066e485038272"
+  },
+  {
+    "path": "research/raytracing/caps.c",
+    "original_path": "fixtures/raytracing/caps.c",
+    "original_sha256": "fda4d03b026a5bdf1e38a3362f863316523e58e38563ec49c0204d5d34584416"
+  },
+  {
+    "path": "research/raytracing/check-resize-cycles.sh",
+    "original_path": "fixtures/raytracing/check-resize-cycles.sh",
+    "original_sha256": "068ea98846de18c4aee2c7adb95813999ff2fc719d1bb58b4c1aea51ea7f8166"
+  },
+  {
+    "path": "research/raytracing/close-gear.c",
+    "original_path": "fixtures/raytracing/close-gear.c",
+    "original_sha256": "1089c708b61cb1feb1c67cc01175bf672573e1f228ce5afc7bfd6c082f2783fe"
+  },
+  {
+    "path": "research/raytracing/commands.c",
+    "original_path": "fixtures/raytracing/commands.c",
+    "original_sha256": "d10f61ee1b1f945124e8a07fe7af57160415eece3311049b731016398e77969f"
+  },
+  {
+    "path": "research/raytracing/continue-observe.c",
+    "original_path": "fixtures/raytracing/continue-observe.c",
+    "original_sha256": "cbe7180e874f10b590a651434ff4d1b9039d8dec8746ecb6048ff4c83f688356"
+  },
+  {
+    "path": "research/raytracing/custom-winex11-trace.nix",
+    "original_path": "fixtures/raytracing/custom-winex11-trace.nix",
+    "original_sha256": "d8b020c9bb1b39f1bf36307668c5356de62cc9d1dc038ab7d9c347f7913a29ea"
+  },
+  {
+    "path": "research/raytracing/disable-gpu.c",
+    "original_path": "fixtures/raytracing/disable-gpu.c",
+    "original_sha256": "912465902bfe230739bfc9c32a0cfb1aa097a9a70370b565d5d08a4bb9c933d5"
+  },
+  {
+    "path": "research/raytracing/disable-view.c",
+    "original_path": "fixtures/raytracing/disable-view.c",
+    "original_sha256": "2ae137765a431cea14718caa3ce2a960aafb370a84457e18041a594683a9b9d1"
+  },
+  {
+    "path": "research/raytracing/documents.c",
+    "original_path": "fixtures/raytracing/documents.c",
+    "original_sha256": "86d9a2ef0a7ecaccfdce11daabdf19d5404d4a2719247074a1d4a8fe0a3c0221"
+  },
+  {
+    "path": "research/raytracing/eligibility-unmodified.c",
+    "original_path": "fixtures/raytracing/eligibility-unmodified.c",
+    "original_sha256": "578507d3406ccbe5da264160311a11df6b701fe8b38621ae53264736782f4517"
+  },
+  {
+    "path": "research/raytracing/eligibility.c",
+    "original_path": "fixtures/raytracing/eligibility.c",
+    "original_sha256": "e03db22262711502b8ff87a5fbd432e19395a378654e1e8795d118443104d150"
+  },
+  {
+    "path": "research/raytracing/enable-live.c",
+    "original_path": "fixtures/raytracing/enable-live.c",
+    "original_sha256": "886c917337dc24e8385c727a9cf13c271ebe0cc4e124f0bd7d1ccf44796bea7d"
+  },
+  {
+    "path": "research/raytracing/enable-view-update.c",
+    "original_path": "fixtures/raytracing/enable-view-update.c",
+    "original_sha256": "19969b74526fbb28801a93ada9d159593b458b62fc25d1589919661c2339eb7a"
+  },
+  {
+    "path": "research/raytracing/enable.c",
+    "original_path": "fixtures/raytracing/enable.c",
+    "original_sha256": "00b87f46067a222db3cb84f389b7b2e34f6803c2ea7d278fd4e6ae70f29c0f7f"
+  },
+  {
+    "path": "research/raytracing/exception-detail.c",
+    "original_path": "fixtures/raytracing/exception-detail.c",
+    "original_sha256": "787e5fc111e6bdef60a4339d43ef43de3530150c0f87c1e76cd0d61af8c26143"
+  },
+  {
+    "path": "research/raytracing/exception-probe.c",
+    "original_path": "fixtures/raytracing/exception-probe.c",
+    "original_sha256": "8766c1508a6088178eb21455f90ad0cec3acf81f508bb0c12c528aa06a93969c"
+  },
+  {
+    "path": "research/raytracing/exception-unwind.c",
+    "original_path": "fixtures/raytracing/exception-unwind.c",
+    "original_sha256": "f409a7adcbb78f3b9f9db776346a28d97fa4d03c0e99be9ed1e343b82833eb06"
+  },
+  {
+    "path": "research/raytracing/fix-raygen-prototype.py",
+    "original_path": "fixtures/raytracing/fix-raygen-prototype.py",
+    "original_sha256": "d26a6b3ff66b73ab1b04d6b0e5de5a7416682bdefc8dee06f6bffdcc98d45639"
+  },
+  {
+    "path": "research/raytracing/gl-probe.c",
+    "original_path": "fixtures/raytracing/gl-probe.c",
+    "original_sha256": "ee09df0eb44711eea382c032477197d859eb9b2dfd88bb22f08703bf6ed9284b"
+  },
+  {
+    "path": "research/raytracing/inject-detail.c",
+    "original_path": "fixtures/raytracing/inject-detail.c",
+    "original_sha256": "5aa8b9a2f737ac05b34c91a56f09a4ebdeb7bc036dcc1803703f60338d2fd701"
+  },
+  {
+    "path": "research/raytracing/inject-exceptions.c",
+    "original_path": "fixtures/raytracing/inject-exceptions.c",
+    "original_sha256": "5e73430bd6a88aaeeee33a730d5ff9eecb3c4795c3ebbf4dfdace475eadac866"
+  },
+  {
+    "path": "research/raytracing/inject-unwind.c",
+    "original_path": "fixtures/raytracing/inject-unwind.c",
+    "original_sha256": "94f3cb6502402d772673e357b84b628b09739e7599e738773d6059b6a55c534d"
+  },
+  {
+    "path": "research/raytracing/inject.c",
+    "original_path": "fixtures/raytracing/inject.c",
+    "original_sha256": "81c516a7695f797f9008e776214aa7454b4e4c9f3067b17e78f9fe0ddd4c928a"
+  },
+  {
+    "path": "research/raytracing/layout-close.c",
+    "original_path": "fixtures/raytracing/layout-close.c",
+    "original_sha256": "fbc9b689808d9846849d675133249af60eebcc7f1dec9febc7bdaa626069d407"
+  },
+  {
+    "path": "research/raytracing/layout-maximize.c",
+    "original_path": "fixtures/raytracing/layout-maximize.c",
+    "original_sha256": "f7e49803151b6f75b1084c829a364fba790ecbbcf074f27c720fe22572dc41e3"
+  },
+  {
+    "path": "research/raytracing/layout-minimize.c",
+    "original_path": "fixtures/raytracing/layout-minimize.c",
+    "original_sha256": "ec1776bd798240ade5e0b3ac9f4a1f1feb6a9a631fe36822c93fb7ca184b4909"
+  },
+  {
+    "path": "research/raytracing/layout-refresh.c",
+    "original_path": "fixtures/raytracing/layout-refresh.c",
+    "original_sha256": "433c991b89349cb76f1e29bfc03068bc06f6e4bc643221036cd6ad721c50897a"
+  },
+  {
+    "path": "research/raytracing/layout-restore.c",
+    "original_path": "fixtures/raytracing/layout-restore.c",
+    "original_sha256": "9d5f7e6bcaf29f33259a4ab39802054a53fc21a5c3d23e97b65f189a9a7cac42"
+  },
+  {
+    "path": "research/raytracing/pe-imports.py",
+    "original_path": "fixtures/raytracing/pe-imports.py",
+    "original_sha256": "1b339080e45fb1f0a9629690a67f37788975be5242fd9f205b6c921225e9011c"
+  },
+  {
+    "path": "research/raytracing/plugin-probe.c",
+    "original_path": "fixtures/raytracing/plugin-probe.c",
+    "original_sha256": "03c88fd0f19243fa3c2b42854f47007e1dbd1a474129f67abfc300a4eb8d62d8"
+  },
+  {
+    "path": "research/raytracing/recover-restart.c",
+    "original_path": "fixtures/raytracing/recover-restart.c",
+    "original_sha256": "f3484567b2b8a98252346fac54ea96b2e5b32954ff737946f2fee9ea8471790c"
+  },
+  {
+    "path": "research/raytracing/render.c",
+    "original_path": "fixtures/raytracing/render.c",
+    "original_sha256": "0218cc4c4edceb771ec798e237ca062ef4e3c27862bfbd15a3af2ae2a6e2f72b"
+  },
+  {
+    "path": "research/raytracing/reset-x11-shape.py",
+    "original_path": "fixtures/raytracing/reset-x11-shape.py",
+    "original_sha256": "ae8697a1335ff45dc5226daadd1debe99a1a790514ab9d1da9f922a11554e467"
+  },
+  {
+    "path": "research/raytracing/sharing.c",
+    "original_path": "fixtures/raytracing/sharing.c",
+    "original_sha256": "ca2010d442aa14873d5cf8e84e7f1b238567c8b73a49a36b980f81a20b82bf59"
+  },
+  {
+    "path": "research/raytracing/trace-x11-shape.patch",
+    "original_path": "fixtures/raytracing/trace-x11-shape.patch",
+    "original_sha256": "e1d08e6e8e2ccf54ade3822ad30f4ca9ecb6423085d805696b8ed8a2e29644ed"
+  },
+  {
+    "path": "research/raytracing/view-status.c",
+    "original_path": "fixtures/raytracing/view-status.c",
+    "original_sha256": "8d01c1e94822a1bb8724f78d721a27b17059a90a6f2432c4d6b0913c134ef4b6"
+  },
+  {
+    "path": "research/raytracing/window-region.c",
+    "original_path": "fixtures/raytracing/window-region.c",
+    "original_sha256": "a870b0d8315697d9ffc04dd4d6173f34f7762f302e667705604ac690b7b7ec77"
+  },
+  {
+    "path": "research/cert-investigation/no-ntsync.c",
+    "original_path": "fixtures/cert-investigation/no-ntsync.c",
+    "original_sha256": "fec38a00df73dea482472a03c4df78a26c79a831c92cd0ea37ad14de301c422d"
+  },
+  {
+    "path": "research/raytracing/memory-layer/layer.c",
+    "original_path": "fixtures/raytracing/memory-layer/layer.c",
+    "original_sha256": "783af37ec5fe3ec0eae6a0fc747edb0d519472eaade1acf24a7bb35be5292abd"
+  },
+  {
+    "path": "research/raytracing/memory-layer/VkLayer_memorytrace.json",
+    "original_path": "fixtures/raytracing/memory-layer/VkLayer_memorytrace.json",
+    "original_sha256": "07643af3b8917aa1134e3cf235ea102232a314cf32e56192c94c5989b9f50051"
+  }
+]

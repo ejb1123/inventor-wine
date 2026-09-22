@@ -254,3 +254,11 @@ The separate offline research installation, verified model open/save test, and
 graphics compatibility settings are documented in [RESEARCH-SETUP.md](RESEARCH-SETUP.md).
 Use `./run-research-contained.sh` for that copy. The original launcher remains
 `./run-inventor.sh`. DirectX-to-Vulkan findings are in [DX12-RESEARCH.md](DX12-RESEARCH.md).
+
+## Published research
+
+The [research guide](research/README.md) indexes the authored graphics probes,
+WebView diagnostics, resize experiments, and a synthetic SPIR-V validation
+reproducer. It distinguishes verified fixes from sample-specific workarounds
+and unresolved findings. Sources are versioned under `research/`; generated
+artifacts and confidential local material remain ignored.

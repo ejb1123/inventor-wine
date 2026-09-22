@@ -1,0 +1,4 @@
+#include <windows.h>
+#include <GL/gl.h>
+static void out(const char *s){DWORD n;if(s)WriteFile(GetStdHandle(STD_OUTPUT_HANDLE),s,lstrlenA(s),&n,0);out:;}
+void mainCRTStartup(void){HWND w=CreateWindowExA(0,"STATIC","GL probe",WS_POPUP,0,0,32,32,0,0,0,0);HDC dc=GetDC(w);PIXELFORMATDESCRIPTOR p={0};p.nSize=sizeof(p);p.nVersion=1;p.dwFlags=PFD_DRAW_TO_WINDOW|PFD_SUPPORT_OPENGL|PFD_DOUBLEBUFFER;p.iPixelType=PFD_TYPE_RGBA;p.cColorBits=24;p.cDepthBits=24;p.cStencilBits=8;int fmt=ChoosePixelFormat(dc,&p);BOOL set=SetPixelFormat(dc,fmt,&p);HGLRC gl=wglCreateContext(dc);BOOL current=wglMakeCurrent(dc,gl);char b[256];wsprintfA(b,"Format=%d set=%d context=%p current=%d error=%lu\r\n",fmt,set,gl,current,GetLastError());out(b);out((const char*)glGetString(GL_VERSION));out("\r\n");out((const char*)glGetString(GL_RENDERER));out("\r\n");wglMakeCurrent(0,0);if(gl)wglDeleteContext(gl);ReleaseDC(w,dc);DestroyWindow(w);ExitProcess(current?0:1);}

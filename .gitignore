@@ -14,3 +14,10 @@
 
 # Local confidential material must never be published.
 /confidential/
+
+# Generated research outputs; keep the authored sources.
+/research/**/*.exe
+/research/**/*.dll
+/research/**/*.so
+/research/**/*.spv
+/research/**/__pycache__/
