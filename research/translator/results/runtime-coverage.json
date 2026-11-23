@@ -1,0 +1,61 @@
+{
+  "date": "2026-09-22",
+  "runtime": "isolated vkd3d-proton 3.0.1 plus aggregate cast and wide temporary patches",
+  "shader_overrides": false,
+  "shader_cache": false,
+  "part_appearances": [
+    "Chrome - Polished",
+    "Rubber - Black",
+    "Clear",
+    "Formwork - Wood Boards"
+  ],
+  "part_camera_orientations": [
+    10754,
+    10755,
+    10760,
+    10761,
+    10764,
+    10759
+  ],
+  "assembly": "bundled scissors sample, disposable copy",
+  "assembly_camera_iterations": 18,
+  "assembly_restore_maximize_pairs": 6,
+  "soak_start": "2026-09-22T20:25:17-04:00",
+  "last_cycle_start": "2026-09-22T20:27:58-04:00",
+  "rss_kib": {
+    "min": 2713972,
+    "max": 2734868,
+    "first": 2724900,
+    "last": 2734868
+  },
+  "gpu_memory_mib": {
+    "min": 1041,
+    "max": 1075
+  },
+  "spirv_modules": 67,
+  "spirv_validation_failures": [],
+  "validation_error_counts": {
+    "110310": {
+      "VUID-vkCmdSetDescriptorBufferOffsetsEXT-pBufferIndices-08065": 10,
+      "VUID-VkMemoryAllocateInfo-allocationSize-01742": 8,
+      "VUID-VkMemoryDedicatedAllocateInfo-image-01878": 8
+    },
+    "202125": {
+      "VUID-vkCmdSetDescriptorBufferOffsetsEXT-pBufferIndices-08065": 10,
+      "VUID-VkMemoryAllocateInfo-allocationSize-01742": 10,
+      "VUID-VkMemoryDedicatedAllocateInfo-image-01878": 10
+    }
+  },
+  "first_session_exit": 143,
+  "first_session_exit_cause": "unknown; no sender captured",
+  "retry_launcher": "systemd user service",
+  "retry_signal_trace": "no SIGTERM or SIGABRT observed before intentional tracer detach",
+  "final_state": "responsive, ray tracing enabled/progress 1/paused, documents saved",
+  "limitations": [
+    "short test, not long-term stability proof",
+    "no numerical correctness reference",
+    "warning causality unresolved",
+    "signal tracing changes timing",
+    "global wide-vector array fallback remains experimental"
+  ]
+}

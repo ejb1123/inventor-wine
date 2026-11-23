@@ -1,0 +1,171 @@
+diff --git a/opcodes/opcodes_llvm_builtins.cpp b/opcodes/opcodes_llvm_builtins.cpp
+index 4a7f235..bf4b525 100644
+--- a/opcodes/opcodes_llvm_builtins.cpp
++++ b/opcodes/opcodes_llvm_builtins.cpp
+@@ -1213,6 +1213,94 @@ static spv::Id emit_special_non_native_packing_bitcast(Converter::Impl &, const
+ 	return 0;
+ }
+ 
++// Flatten aggregates in declaration order. This handles equal-width scalar
++// lanes only; packing different lane widths requires a separate lowering.
++static bool collect_bitcast_lanes(spv::Builder &builder, spv::Id type, Vector<spv::Id> &lanes)
++{
++	auto kind = builder.getTypeClass(type);
++	if (kind == spv::OpTypeInt || kind == spv::OpTypeFloat)
++	{
++		if (lanes.size() >= 4096)
++			return false;
++		lanes.push_back(type);
++		return true;
++	}
++	if (kind != spv::OpTypeStruct && kind != spv::OpTypeArray && kind != spv::OpTypeVector)
++		return false;
++	for (int i = 0; i < builder.getNumTypeConstituents(type); i++)
++		if (!collect_bitcast_lanes(builder, builder.getContainedTypeId(type, i), lanes))
++			return false;
++	return true;
++}
++
++static void extract_bitcast_lanes(Converter::Impl &impl, spv::Id type, spv::Id value, Vector<spv::Id> &values)
++{
++	auto &builder = impl.builder();
++	if (builder.isScalarType(type))
++	{
++		values.push_back(value);
++		return;
++	}
++	for (int i = 0; i < builder.getNumTypeConstituents(type); i++)
++	{
++		auto member_type = builder.getContainedTypeId(type, i);
++		auto *extract = impl.allocate(spv::OpCompositeExtract, member_type);
++		extract->add_id(value);
++		extract->add_literal(i);
++		impl.add(extract);
++		extract_bitcast_lanes(impl, member_type, extract->id, values);
++	}
++}
++
++static spv::Id construct_bitcast_lanes(Converter::Impl &impl, spv::Id type, const Vector<spv::Id> &source_types,
++                                       const Vector<spv::Id> &values, unsigned &index)
++{
++	auto &builder = impl.builder();
++	if (builder.isScalarType(type))
++	{
++		auto value = values[index];
++		auto source_type = source_types[index++];
++		if (type == source_type)
++			return value;
++		auto *cast = impl.allocate(spv::OpBitcast, type);
++		cast->add_id(value);
++		impl.add(cast);
++		return cast->id;
++	}
++	// Emit children before their enclosing composite.
++	Vector<spv::Id> members;
++	for (int i = 0; i < builder.getNumTypeConstituents(type); i++)
++		members.push_back(
++		    construct_bitcast_lanes(impl, builder.getContainedTypeId(type, i), source_types, values, index));
++	auto *construct = impl.allocate(spv::OpCompositeConstruct, type);
++	for (auto member : members)
++		construct->add_id(member);
++	impl.add(construct);
++	return construct->id;
++}
++
++static spv::Id emit_aggregate_bitcast(Converter::Impl &impl, spv::Id value, spv::Id source_type, spv::Id target_type)
++{
++	auto &builder = impl.builder();
++	Vector<spv::Id> source_types, target_types, values;
++	if (!collect_bitcast_lanes(builder, source_type, source_types) ||
++	    !collect_bitcast_lanes(builder, target_type, target_types) || source_types.size() != target_types.size())
++	{
++		LOGE("Aggregate bitcast requires equal scalar lane counts.\n");
++		return 0;
++	}
++	for (unsigned i = 0; i < source_types.size(); i++)
++		if (builder.getScalarTypeWidth(source_types[i]) != builder.getScalarTypeWidth(target_types[i]))
++		{
++			LOGE("Aggregate bitcast with different scalar widths is not implemented.\n");
++			return 0;
++		}
++	extract_bitcast_lanes(impl, source_type, value, values);
++	unsigned index = 0;
++	auto result = construct_bitcast_lanes(impl, target_type, source_types, values, index);
++	return result;
++}
++
+ template <typename InstructionType>
+ static spv::Id emit_cast_instruction_impl(Converter::Impl &impl, const InstructionType *instruction)
+ {
+@@ -1272,6 +1360,20 @@ static spv::Id emit_cast_instruction_impl(Converter::Impl &impl, const Instructi
+ 	switch (instruction->getOpcode())
+ 	{
+ 	case llvm::Instruction::CastOps::BitCast:
++		if (instruction->getOperand(0)->getType()->getTypeID() != llvm::Type::TypeID::PointerTyID &&
++		    instruction->getType()->getTypeID() != llvm::Type::TypeID::PointerTyID)
++		{
++			auto source_type = impl.get_type_id(instruction->getOperand(0)->getType());
++			auto target_type = impl.get_type_id(instruction->getType());
++			if (impl.builder().isAggregateType(source_type) || impl.builder().isAggregateType(target_type))
++			{
++				auto id = emit_aggregate_bitcast(impl, impl.get_id_for_value(instruction->getOperand(0)), source_type,
++				                                 target_type);
++				if (id)
++					impl.rewrite_value(instruction, id);
++				return id;
++			}
++		}
+ 		if (!impl.support_native_fp16_operations())
+ 			if (spv::Id id = emit_special_non_native_packing_bitcast(impl, instruction))
+ 				return id;
+@@ -1886,9 +1988,20 @@ bool emit_load_instruction(Converter::Impl &impl, const llvm::LoadInst *instruct
+ 		if (needs_group_shared_auto_barrier(impl, instruction->getPointerOperand()))
+ 			load_op->flags |= Operation::AutoGroupSharedBarrier;
+ 
+-		Operation *cast_op = impl.allocate(spv::OpBitcast, instruction);
+-		cast_op->add_id(load_op->id);
+-		impl.add(cast_op);
++		auto target_type = impl.get_type_id(instruction->getType());
++		if (impl.builder().isAggregateType(remapped_type_id) || impl.builder().isAggregateType(target_type))
++		{
++			auto id = emit_aggregate_bitcast(impl, load_op->id, remapped_type_id, target_type);
++			if (!id)
++				return false;
++			impl.rewrite_value(instruction, id);
++		}
++		else
++		{
++			Operation *cast_op = impl.allocate(spv::OpBitcast, instruction);
++			cast_op->add_id(load_op->id);
++			impl.add(cast_op);
++		}
+ 	}
+ 	else
+ 	{
+@@ -1973,10 +2086,22 @@ bool emit_store_instruction(Converter::Impl &impl, const llvm::StoreInst *instru
+ 
+ 	if (remapped_type_id != 0)
+ 	{
+-		Operation *cast_op = impl.allocate(spv::OpBitcast, remapped_type_id);
+-		cast_op->add_id(impl.get_id_for_value(instruction->getOperand(0)));
+-		impl.add(cast_op);
+-		op->add_id(cast_op->id);
++		auto source_type = impl.get_type_id(instruction->getOperand(0)->getType());
++		auto value = impl.get_id_for_value(instruction->getOperand(0));
++		if (impl.builder().isAggregateType(source_type) || impl.builder().isAggregateType(remapped_type_id))
++		{
++			auto id = emit_aggregate_bitcast(impl, value, source_type, remapped_type_id);
++			if (!id)
++				return false;
++			op->add_id(id);
++		}
++		else
++		{
++			Operation *cast_op = impl.allocate(spv::OpBitcast, remapped_type_id);
++			cast_op->add_id(value);
++			impl.add(cast_op);
++			op->add_id(cast_op->id);
++		}
+ 	}
+ 	else
+ 		op->add_id(impl.get_id_for_value(instruction->getOperand(0)));

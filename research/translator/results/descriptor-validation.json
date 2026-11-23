@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-22",
+  "gpu": "NVIDIA RTX 3080",
+  "validation_version": "1.4.341.0",
+  "results": [
+    {
+      "mode": "default",
+      "exit_code": 1,
+      "errors_before_classic": 0,
+      "errors": 1,
+      "target_08065": 1
+    },
+    {
+      "mode": "--no-classic",
+      "exit_code": 0,
+      "errors_before_classic": 0,
+      "errors": 0,
+      "target_08065": 0
+    },
+    {
+      "mode": "--rebind",
+      "exit_code": 0,
+      "errors_before_classic": 0,
+      "errors": 0,
+      "target_08065": 0
+    }
+  ],
+  "scope": "native Vulkan recording only; no Inventor or Wine"
+}

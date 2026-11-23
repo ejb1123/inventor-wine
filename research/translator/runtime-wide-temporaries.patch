@@ -1,0 +1,19 @@
+diff --git a/dxil_converter.cpp b/dxil_converter.cpp
+index 2e4a105..7681237 100644
+--- a/dxil_converter.cpp
++++ b/dxil_converter.cpp
+@@ -4351,7 +4351,13 @@ spv::Id Converter::Impl::get_type_id(const llvm::Type *type, TypeLayoutFlags fla
+ 	case llvm::Type::TypeID::VectorTyID:
+ 	{
+ 		auto *vec_type = llvm::cast<llvm::VectorType>(type);
+-		return builder.makeVectorType(get_type_id(vec_type->getElementType()), vec_type->getVectorNumElements());
++		// Experimental fallback for composite-only wide matrix temporaries.
++		// General wide-vector arithmetic requires separate scalar lowering.
++		auto element_type = get_type_id(vec_type->getElementType());
++		unsigned count = vec_type->getVectorNumElements();
++		if (count > 4)
++			return builder.makeArrayType(element_type, builder.makeUintConstant(count), 0);
++		return builder.makeVectorType(element_type, count);
+ 	}
+ 
+ 	case llvm::Type::TypeID::VoidTyID:

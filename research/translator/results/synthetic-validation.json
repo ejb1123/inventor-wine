@@ -1,0 +1,26 @@
+[
+  {
+    "shape": "2x3",
+    "baseline": 1,
+    "patched": 0
+  },
+  {
+    "shape": "3x3",
+    "baseline": 1,
+    "patched": 0
+  },
+  {
+    "shape": "3x4",
+    "baseline": 1,
+    "patched": 0
+  },
+  {
+    "shape": "4x4",
+    "baseline": 1,
+    "patched": 0
+  },
+  {
+    "shape": "8-to-12 lanes",
+    "patched_rejects": true
+  }
+]

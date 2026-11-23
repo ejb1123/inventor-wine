@@ -1,0 +1,22 @@
+[
+  {
+    "group": "asm",
+    "cases": 7,
+    "passed": true
+  },
+  {
+    "group": "long-vector",
+    "cases": 14,
+    "passed": true
+  },
+  {
+    "group": "llvm-builtin",
+    "cases": 45,
+    "passed": true
+  },
+  {
+    "group": "alloca-opts",
+    "cases": 16,
+    "passed": true
+  }
+]
