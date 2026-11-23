@@ -1,0 +1,7 @@
+{
+  "low_USD": 733,
+  "high_USD": 1843,
+  "basis": "unquoted engineering allowances for one small-batch prototype; not current selling prices",
+  "excluded": "tax, shipping, engineering labor, qualification testing, tooling/NRE beyond listed allowances, PoE injector/switch, USB PD supply, optional IR/heater/microSD",
+  "procurement_release": false
+}

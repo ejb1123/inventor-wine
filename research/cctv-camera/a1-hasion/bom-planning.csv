@@ -1,0 +1,11 @@
+item,planning_quantity,description,supplier,candidate_part,status,unit_price_USD,notes
+A1-M01,1,Housing assembly,Hasion,X6Z7 variant TBD,Selected supplier / candidate model,TBD,"Ask whether glass, seals, mount, sunshield, fasteners and cable seal are included"
+A1-M02,1,Internal tray and heat spreader,Custom / PCBWay,TBD,Await housing STEP and thermal requirements,TBD,Do not order A0 machined outer shell
+A1-M03,1,Sealed USB-C service access,Hasion + connector supplier,TBD,Factory feasibility required,TBD,Catalog SD access is not confirmed suitable for USB-C
+A1-M04,1,Antenna and sealed bulkhead,TBD,TBD,Pending radio and housing option,TBD,Select shared Wi-Fi/Bluetooth RF path and matched antenna
+A1-E01,1,4K60 image sensor module,Sony sensor / module vendor TBD,IMX585; FRAMOS FSM-IMX585 candidate,Sensor recommended; module/host not released,TBD,MIPI capture mode and ISP tuning required; no USB 4K15 substitute
+A1-E02,1,Camera processor / encoder,TBD,TBD,Must fit housing and sustain 4K60,TBD,No assumption that previous 82x53 SOM fits
+A1-E03,1,PoE PD and power conversion,TBD,TBD,Recalculate after processor selection,TBD,Previous Ag5300 peak-budget shortfall remains unresolved
+A1-E04,1,Wi-Fi/Bluetooth subsystem,TBD,TBD,Module and host interface under review,TBD,Previous radio candidate not fit-qualified
+A1-E05,1,USB-C PD sink and service interface,TBD,TBD,Architecture retained; parts not frozen,TBD,Power-source protection; USB device data separate from image input
+A1-E06,1,Carrier / board stack,Custom / PCBWay,TBD,"No schematic, routing or fabrication release",TBD,"Outline, layer stack and thermal interfaces pending"

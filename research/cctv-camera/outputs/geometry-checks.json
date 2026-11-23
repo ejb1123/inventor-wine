@@ -1,0 +1,100 @@
+{
+  "status": "CONCEPT: not production or IP qualification",
+  "solid_validity": true,
+  "part_count": 42,
+  "copper_layer_count": 7,
+  "pcb_thickness_mm": 1.6,
+  "checks": [
+    {
+      "check": "10_SOM_ENVELOPE_82x53 vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "11_PoE_ENVELOPE vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "12_RADIO_M2_ENVELOPE vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "13_camera_PCB_ENVELOPE vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "14_lens_ENVELOPE vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "10_SOM_ENVELOPE_82x53 vs 11_PoE_ENVELOPE",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "10_SOM_ENVELOPE_82x53 vs 12_RADIO_M2_ENVELOPE",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "14_lens_ENVELOPE vs 13_camera_PCB_ENVELOPE",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal at x=0 vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 0,-51,-39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 0,-51,39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 0,51,-39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 0,51,39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal at x=208.5 vs body",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 208.5,-51,-39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 208.5,-51,39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 208.5,51,-39",
+      "intersection_mm3": 0.0
+    },
+    {
+      "check": "seal vs bolt clearance 208.5,51,39",
+      "intersection_mm3": 0.0
+    }
+  ],
+  "nominal_gasket_squeeze_percent": 25,
+  "gasket_squeeze_tolerance_percent": [
+    18.421,
+    30.952
+  ],
+  "mass_g_included_geometry_only": 2488.4,
+  "excluded_from_mass": "supplier envelopes, cables, fasteners; copper modeled as full sheets so PCB mass is an upper estimate",
+  "unvalidated": [
+    "temperature and solar gain",
+    "IP66",
+    "radio antenna and EMC",
+    "optics and image quality",
+    "module fasteners and pinouts",
+    "seal tolerances and compression force",
+    "mount strength and adjustment",
+    "thermal contact to outer case",
+    "PCB routing and impedance",
+    "Inventor native features/drawings"
+  ]
+}

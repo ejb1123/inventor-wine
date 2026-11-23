@@ -1,0 +1,90 @@
+{
+  "step_roundtrips": {
+    "01_body.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "02_front_plate.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "03_rear_plate_PORTS_PROVISIONAL.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "04_front_seal.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "05_rear_seal.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "06_window.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "07_window_gasket.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "08_window_retainer.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "09_sunshield.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "21_mount_boss.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "22_bracket_arm_CONCEPT.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "23_mount_base.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "cctv-assembly.step": {
+      "valid_after_import": true,
+      "solids": 42
+    },
+    "cctv-exploded.step": {
+      "valid_after_import": true,
+      "solids": 42
+    },
+    "seven-copper-layer-board.step": {
+      "valid_after_import": true,
+      "solids": 13
+    },
+    "shield_spacer_175.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "shield_spacer_35.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "standoff_193_-38.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "standoff_193_38.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "standoff_63_-38.step": {
+      "valid_after_import": true,
+      "solids": 1
+    },
+    "standoff_63_38.step": {
+      "valid_after_import": true,
+      "solids": 1
+    }
+  },
+  "drawing_pages": 7,
+  "scope": "File integrity/geometry only; no manufacturing approval"
+}

@@ -1,0 +1,64 @@
+{
+  "revision": "A0-superseded-generator-inputs",
+  "units": "mm",
+  "confirmed": {
+    "sensor": "Sony; optical format flexible (1-inch requirement removed)",
+    "resolution": "3840 x 2160",
+    "interfaces": [
+      "PoE Ethernet",
+      "Wi-Fi",
+      "Bluetooth",
+      "USB-C power and service"
+    ],
+    "copper_layers_requested": 7,
+    "deliverables": [
+      "PCB",
+      "board model",
+      "case",
+      "validation",
+      "drawing sheets",
+      "BOM"
+    ],
+    "frame_rate_fps": 60
+  },
+  "provisional": {
+    "form": "Sourced compact OEM camera enclosure preferred; model pending supplier dimensions",
+    "ingress_target": "IP66, not tested or certified",
+    "ambient_target_C": [
+      -20,
+      50
+    ],
+    "camera_candidate": "Sony IMX585 via MIPI module; exact module/host integration unverified",
+    "candidate_4k_fps": 60,
+    "processor_candidate": "Firefly Core-3588J RK3588",
+    "night_vision": "not specified; no IR illuminator included",
+    "recording": "network primary; eMMC OS; microSD optional, not allocated",
+    "budget": "not specified",
+    "field_of_view": "lens selection pending distance and coverage",
+    "body_length": 210,
+    "body_width": 114,
+    "body_height": 90,
+    "wall": 8,
+    "end_land": 8,
+    "plate_thickness": 6,
+    "pcb_length": 140,
+    "pcb_width": 86,
+    "pcb_thickness": 1.6,
+    "pcb_origin": [
+      58,
+      -43,
+      -29
+    ],
+    "copper_thickness": 0.035,
+    "dielectric_thickness": 0.22583333333333333,
+    "gasket_free_thickness": 2.0,
+    "gasket_groove_depth": 1.5,
+    "window_diameter": 64,
+    "window_thickness": 3,
+    "clear_aperture": 56,
+    "sunshield_gap": 8,
+    "prior_A0_camera": "Arducam B0477 is rejected for new 4K60 requirement; old A0 package is historical",
+    "prior_A0_enclosure": "Rejected by user; archived reference only"
+  },
+  "status": "Historical geometry inputs only; not current camera specification"
+}

@@ -119,3 +119,25 @@ and records its resolved path in each session's `x11-driver.txt`. Build it with
 included in the flake's Git source. Removing that symlink restores the original
 driver without altering the prefix. The installed driver was tested through
 a private bind mount; the immutable Wine store path itself was not modified.
+
+## Source-level aggregate-cast prototype
+
+The [translator research](research/translator/README.md) now includes a pinned
+upstream patch and an Autodesk-independent LLVM/DXIL reproducer. It lowers
+aggregate casts in loads, stores, and value casts by extracting/reconstructing
+scalar lanes. Four synthetic matrix shapes and both locally captured RayGen
+variants validate; 82 upstream cases pass. The initial wide-vector-to-array
+experiment regressed arithmetic and was removed.
+
+An isolated vkd3d-proton 3.0.1 runtime retry now renders the gear without shader
+overrides, using the aggregate patch plus a separate experimental wide-temporary
+array workaround. All 27 fresh shader dumps validate; three maximize/restore
+cycles passed. Numerical semantics, material coverage, general wide-vector
+arithmetic, and existing Vulkan warnings remain unresolved. Normal launch
+behavior has not changed. See the translator guide for pins and limitations.
+
+Broader isolated coverage subsequently passed four appearances, six part camera
+orientations, and 18 assembly camera changes with six restore/maximize pairs.
+All 67 accumulated shader dumps validate. An initial assembly attempt ended with
+exit 143; a systemd-launched retry passed, but the earlier termination remains
+unexplained. See [coverage results](research/translator/results/runtime-coverage.json).

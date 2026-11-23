@@ -1,0 +1,60 @@
+{
+  "revision": "A1-Hasion-sourcing",
+  "units": "mm",
+  "confirmed": {
+    "sensor": "Sony; optical format flexible (1-inch requirement removed)",
+    "resolution": "3840 x 2160",
+    "interfaces": [
+      "PoE Ethernet",
+      "Wi-Fi",
+      "Bluetooth",
+      "USB-C power and service"
+    ],
+    "copper_layers_requested": 7,
+    "deliverables": [
+      "PCB",
+      "board model",
+      "case",
+      "validation",
+      "drawing sheets",
+      "BOM"
+    ],
+    "frame_rate_fps": 60,
+    "enclosure_supplier": "Hasion",
+    "software_platform": "Common non-Android platform across fixed and PTZ cameras; software development deferred",
+    "ai_acceleration": "Required; integrated SoC NPU or separate accelerator",
+    "future_interfaces": [
+      "LTE/5G cellular",
+      "Wi-Fi",
+      "Bluetooth"
+    ],
+    "radio_monitoring_request": "Selectable monitoring requested; exact scope pending clarification; capabilities differ by radio technology"
+  },
+  "provisional": {
+    "form": "Compact OEM bullet, white body / black front as catalog reference",
+    "ingress_target": "IP66, not tested or certified",
+    "ambient_target_C": [
+      -20,
+      50
+    ],
+    "camera_candidate": "Sony IMX585 via MIPI module; exact module/host integration unverified",
+    "candidate_4k_fps": 60,
+    "processor_candidate": "Forlinx FET3588J-C industrial RK3588 module lead for shared Linux/MIPI/HDMI platform; Geniatech SOM3588 alternate; exact SKU, 4K60 workload, power and housing fit unverified",
+    "night_vision": "not specified; no IR illuminator included",
+    "recording": "network primary; eMMC OS; microSD optional, not allocated",
+    "budget": "not specified",
+    "field_of_view": "lens selection pending distance and coverage",
+    "prior_A0_camera": "Arducam B0477 is rejected for new 4K60 requirement; old A0 package is historical",
+    "prior_A0_enclosure": "Rejected by user; archived reference only",
+    "enclosure_model": "X6Z7 lead candidate; exact variant and fit pending supplier confirmation",
+    "pcb_outline": "TBD after internal drawings; 38/42 mm catalog size describes sensor board support only",
+    "layer_count_status": "Seven requested; eight suggested for PCBWay standard process; no user decision yet",
+    "mechanical_cad_status": "Supplier internal STEP, mounting and sealing drawings not obtained",
+    "platform_architecture": "Shared compute/software with housing-specific carriers; modular radios and separate optional supervisory MCU"
+  },
+  "superseded_artifacts": [
+    "outputs/CCTV-A0-PCBWAY-RFQ-ONLY.zip",
+    "bom.csv",
+    "outputs/CCTV-A0-drawing-sheets.pdf"
+  ]
+}

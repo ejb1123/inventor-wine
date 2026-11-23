@@ -692,3 +692,53 @@ Additional unresolved log finding: Wine Mono emits “Native Crash Reporting” 
 sessions, so it is not newly introduced by the X11 patch. Inventor continues
 running/rendering afterward. The affected component and functional impact are
 not yet identified; do not describe this as a full application crash or fixed.
+
+### Aggregate-cast source prototype
+
+A current dxil-spirv checkout at c5e5522a121c5908a1c4fd472d68fa70c8fde9f4
+reproduced the captured RayGen aggregate OpBitcast validation failure. The
+prototype now lowers value casts plus casts inserted for remapped loads/stores
+using scalar extraction and composite reconstruction. A global vector-to-array
+change failed the upstream long-vector group and was removed.
+
+Final candidate: four synthetic matrix shapes pass (baseline fails each), an
+unequal-lane case is explicitly rejected, and 82 upstream cases pass across asm,
+long-vector, llvm-builtin, and alloca-opts. Both captured RayGen variants also
+pass standalone Vulkan 1.3/scalar-layout validation. See
+`research/translator/` for the patch, independent reproducer, results, and limits.
+A later isolated runtime retry (`research-20260922-110310`) rendered the gear
+without shader overrides and passed three maximize/restore cycles. Its 27 fresh
+shader dumps validate. This uses a separate older-translator wide-temporary
+workaround that does not support general wide-vector arithmetic. Normal runtime
+is unchanged; numerical correctness, broader materials, and Vulkan warnings
+01742/01878/08065 remain unresolved.
+
+### Broader GPU coverage and unresolved termination
+
+Evening coverage passed four gear appearances, six part camera orientations,
+and a scissors-assembly retry with 18 camera changes/six restore-maximize pairs.
+All 67 accumulated shaders validate. Results and reproducible helper are in
+`research/translator/results/runtime-coverage.json` and
+`research/raytracing/coverage.md`. This was a short test, not general stability or
+numerical proof; the wide-vector workaround remains experimental.
+
+The first assembly attempt ended with launcher exit 143 without a captured
+signal sender or crash backtrace. The systemd-launched retry did not reproduce
+termination while signal tracing was attached. Keep unexplained exits open;
+changing the launcher is an isolation measure, not a demonstrated fix.
+Vulkan warnings 01742/01878/08065 persist; source findings and next diagnostic
+steps are in `research/raytracing/validation-notes.md`.
+
+### Validation investigation follow-up
+
+A standalone native Vulkan reproducer now triggers exactly one 08065 when a
+classic descriptor-set bind intervenes between descriptor-buffer offset updates.
+Both controls (omit classic bind, or rebind the buffer) report zero errors. This
+strongly indicates validation-layer tracking behavior, independent of Inventor.
+The live trace also records an earlier buffer bind before its warning. See
+`research/raytracing/descriptor-rebind-repro.md` and the JSON results.
+
+A syscall trace confirms external-memory FD close/reuse through Wine IPC, which
+strengthens the stale-FD explanation for 01742/01878 without proving full payload
+identity. No memory-size changes or warning suppression were made. Exit 143's
+sender remains unknown. Full findings: `research/raytracing/validation-notes.md`.

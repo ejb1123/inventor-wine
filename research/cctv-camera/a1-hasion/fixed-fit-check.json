@@ -1,0 +1,66 @@
+{
+  "status": "FIT_NOT_ESTABLISHED",
+  "method": "2D necessary-condition screening, no enclosure CAD or collision test",
+  "housing_external_reference_mm": {
+    "length": 107.5,
+    "width": 75.2
+  },
+  "assumed_perimeter_mm": 3.0,
+  "layouts": [
+    {
+      "layout": "som_only",
+      "length_mm": 68.0,
+      "width_mm": 50.0,
+      "external_length_margin_mm": 39.5,
+      "external_width_margin_mm": 25.2,
+      "within_external_rectangle": true,
+      "fit_status": "UNVERIFIED"
+    },
+    {
+      "layout": "side_by_side_same_orientation",
+      "length_mm": 68.0,
+      "width_mm": 80.0,
+      "external_length_margin_mm": 39.5,
+      "external_width_margin_mm": -4.8,
+      "within_external_rectangle": false,
+      "fit_status": "REJECT_THIS_ORIENTATION"
+    },
+    {
+      "layout": "end_to_end_same_orientation",
+      "length_mm": 120.0,
+      "width_mm": 50.0,
+      "external_length_margin_mm": -12.5,
+      "external_width_margin_mm": 25.2,
+      "within_external_rectangle": false,
+      "fit_status": "REJECT_THIS_ORIENTATION"
+    },
+    {
+      "layout": "stacked_bare_boards_plan_only",
+      "length_mm": 68.0,
+      "width_mm": 50.0,
+      "external_length_margin_mm": 39.5,
+      "external_width_margin_mm": 25.2,
+      "within_external_rectangle": true,
+      "fit_status": "UNVERIFIED"
+    },
+    {
+      "layout": "stacked_with_assumed_3mm_perimeter",
+      "length_mm": 74.0,
+      "width_mm": 56.0,
+      "external_length_margin_mm": 33.5,
+      "external_width_margin_mm": 19.2,
+      "within_external_rectangle": true,
+      "fit_status": "UNVERIFIED"
+    }
+  ],
+  "unknowns": [
+    "internal cross-sections",
+    "wall/boss intrusion",
+    "stack height",
+    "carrier and power circuitry",
+    "lens and optical axis",
+    "heatsink",
+    "sockets and cable bends",
+    "RF keepouts"
+  ]
+}

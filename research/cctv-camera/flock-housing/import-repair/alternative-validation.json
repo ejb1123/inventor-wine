@@ -1,0 +1,94 @@
+[
+  {
+    "file": "23_rail_clamp_-220_180_imported_AP203.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.383877798035,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 4.776227354056159e-16
+  },
+  {
+    "file": "23_rail_clamp_-220_180_imported_AP214IS.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.383877798035,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 4.776227354056159e-16
+  },
+  {
+    "file": "23_rail_clamp_-220_180_imported.igs",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.38387843586,
+    "relative_volume_error": 2.0935159738298955e-11
+  },
+  {
+    "file": "23_rail_clamp_-220_180_rebuilt_AP203.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.383877813256,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 5.000710039696798e-13
+  },
+  {
+    "file": "23_rail_clamp_-220_180_rebuilt_AP214IS.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.383877813256,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 5.000710039696798e-13
+  },
+  {
+    "file": "23_rail_clamp_-220_180_rebuilt.igs",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 30467.383878156656,
+    "relative_volume_error": 1.1771131719755255e-11
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_imported_AP203.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.000000209,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 0.0
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_imported_AP214IS.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.000000209,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 0.0
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_imported.igs",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.00000205036,
+    "relative_volume_error": 8.768429757929772e-12
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_rebuilt_AP203.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.000000209,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 0.0
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_rebuilt_AP214IS.step",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.000000209,
+    "symmetric_difference_mm3": 0.0,
+    "relative_volume_error": 0.0
+  },
+  {
+    "file": "24_cross_rail_REFERENCE_rebuilt.igs",
+    "valid": true,
+    "solid_count": 1,
+    "volume_mm3": 210000.00000205036,
+    "relative_volume_error": 8.768429757929772e-12
+  }
+]

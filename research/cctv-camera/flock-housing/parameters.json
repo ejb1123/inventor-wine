@@ -1,0 +1,14 @@
+{
+  "head_height": 277.8125,
+  "hood_width": 138.1125,
+  "overall_depth": 119.0625,
+  "body_width": 112.0,
+  "body_depth": 68.0,
+  "wall": 3.2,
+  "panel_width": 709.6125,
+  "panel_height": 539.75,
+  "panel_frame_depth": 30.0,
+  "panel_tilt_deg": 45.0,
+  "pole_diameter": 73.025,
+  "print_clearance": 0.35
+}

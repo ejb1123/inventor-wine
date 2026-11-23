@@ -1,0 +1,366 @@
+[
+  {
+    "part": "01_body_upper",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      64.0,
+      112.0,
+      130.295
+    ],
+    "volume_mm3": 109724.707,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 4.0847590444592757e-14
+  },
+  {
+    "part": "02_body_lower",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      64.0,
+      99.759,
+      138.731
+    ],
+    "volume_mm3": 101446.92,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.1946876616607237e-13
+  },
+  {
+    "part": "03_body_splice",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      55.0,
+      94.719,
+      24.0
+    ],
+    "volume_mm3": 14012.117,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.828678808187617e-13
+  },
+  {
+    "part": "04_front_upper",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      3.65,
+      112.0,
+      130.295
+    ],
+    "volume_mm3": 28217.987,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.9265772403508943e-14
+  },
+  {
+    "part": "05_front_lower",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      3.65,
+      99.759,
+      138.731
+    ],
+    "volume_mm3": 42920.194,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.0188328822008807e-13
+  },
+  {
+    "part": "06_front_splice_strip",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      2.5,
+      80.0,
+      20.0
+    ],
+    "volume_mm3": 4000.0,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.13686837721616e-16
+  },
+  {
+    "part": "07_optics_insert",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      4.3,
+      80.0,
+      80.0
+    ],
+    "volume_mm3": 15015.727,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 4.9182414787629114e-14
+  },
+  {
+    "part": "08_window_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      2.0,
+      80.0,
+      80.0
+    ],
+    "volume_mm3": 10053.096,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 0.0
+  },
+  {
+    "part": "09_rear_cable_blank",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      5.0,
+      20.0,
+      20.0
+    ],
+    "volume_mm3": 1179.88,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 3.854182736872884e-16
+  },
+  {
+    "part": "10_hood",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      119.062,
+      138.113,
+      186.906
+    ],
+    "volume_mm3": 254146.761,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 9.57237927143517e-13
+  },
+  {
+    "part": "11_camera_pole_saddle",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      30.0,
+      74.0,
+      90.0
+    ],
+    "volume_mm3": 141283.349,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 5.3874313313594686e-08
+  },
+  {
+    "part": "12_camera_spacer_1",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      32.0,
+      10.0,
+      10.0
+    ],
+    "volume_mm3": 1753.009,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.166070469803716e-14
+  },
+  {
+    "part": "12_camera_spacer_2",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      32.0,
+      10.0,
+      10.0
+    ],
+    "volume_mm3": 1753.009,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.166070469803716e-14
+  },
+  {
+    "part": "12_camera_spacer_3",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      32.0,
+      10.0,
+      10.0
+    ],
+    "volume_mm3": 1753.009,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.166070469803716e-14
+  },
+  {
+    "part": "12_camera_spacer_4",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      32.0,
+      10.0,
+      10.0
+    ],
+    "volume_mm3": 1753.009,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.166070469803716e-14
+  },
+  {
+    "part": "20_solar_pole_yoke",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      100.0,
+      90.0,
+      150.0
+    ],
+    "volume_mm3": 384548.753,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.4824047183515835e-14
+  },
+  {
+    "part": "21_solar_pivot_block",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      218.0,
+      40.0,
+      125.0
+    ],
+    "volume_mm3": 388796.478,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 3.8206609120343747e-13
+  },
+  {
+    "part": "22_rail_-180_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      395.98,
+      20.0,
+      395.98
+    ],
+    "volume_mm3": 216000.0,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.0202509454554984e-12
+  },
+  {
+    "part": "23_rail_clamp_-220_-180",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      57.276,
+      40.0,
+      57.276
+    ],
+    "volume_mm3": 30467.384,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.0304710516375101e-13
+  },
+  {
+    "part": "23_rail_clamp_220_-180",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      57.276,
+      40.0,
+      57.276
+    ],
+    "volume_mm3": 30467.384,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.0919875810763735e-13
+  },
+  {
+    "part": "22_rail_180_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      395.98,
+      20.0,
+      395.98
+    ],
+    "volume_mm3": 216000.0,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.0202509454554984e-12
+  },
+  {
+    "part": "23_rail_clamp_-220_180",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      57.276,
+      40.0,
+      57.276
+    ],
+    "volume_mm3": 30467.384,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 1.0304710516375101e-13
+  },
+  {
+    "part": "23_rail_clamp_220_180",
+    "printable": true,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      57.276,
+      40.0,
+      57.276
+    ],
+    "volume_mm3": 30467.384,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.0919875810763735e-13
+  },
+  {
+    "part": "24_cross_rail_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      42.426,
+      420.0,
+      42.426
+    ],
+    "volume_mm3": 210000.0,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 9.986771536724942e-13
+  },
+  {
+    "part": "25_solar_panel_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      402.874,
+      709.612,
+      402.874
+    ],
+    "volume_mm3": 11490400.406,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 6.921860427848984e-14
+  },
+  {
+    "part": "26_pole_REFERENCE",
+    "printable": false,
+    "valid": true,
+    "solids": 1,
+    "dimensions_mm": [
+      73.025,
+      73.025,
+      1000.0
+    ],
+    "volume_mm3": 4188254.007,
+    "step_roundtrip_valid": true,
+    "step_relative_volume_error": 2.2236535154691324e-16
+  }
+]

@@ -104,3 +104,16 @@ memory tracing that distinguishes actual payload identity from descriptor
 numbers. Keep reduced reproductions independent of Autodesk binaries where
 possible. Report exact versions, expected versus observed behavior, and whether
 an experiment merely suppresses a diagnostic or demonstrably repairs rendering.
+
+The newer [aggregate-cast translator prototype](translator/README.md) includes
+an actual LLVM-to-SPIR-V before/after reproduction, a source patch, four synthetic
+matrix shapes, a negative case, and results from 82 upstream regression cases.
+It is more representative than the standalone type-restriction example above,
+but numerical behavior and application integration remain unverified.
+
+Broader live checks use the [disposable-document coverage helper](raytracing/coverage.md).
+[Validation notes](raytracing/validation-notes.md) separate observed Vulkan warnings
+from hypotheses about their causes.
+The [descriptor validation reproducer](raytracing/descriptor-rebind-repro.md)
+separates one warning sequence from Wine/Inventor entirely; its two controls
+and default-case results are recorded alongside the translator results.

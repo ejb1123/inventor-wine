@@ -1,0 +1,242 @@
+[
+  {
+    "file": "01_body_upper.stl",
+    "triangles": 6804,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 109713.89,
+    "print_bounds_mm": [
+      64.0,
+      112.0,
+      130.287
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "02_body_lower.stl",
+    "triangles": 5324,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 101413.41,
+    "print_bounds_mm": [
+      64.0,
+      99.759,
+      138.731
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "03_body_splice.stl",
+    "triangles": 1724,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 14012.11,
+    "print_bounds_mm": [
+      55.0,
+      94.719,
+      24.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "04_front_upper.stl",
+    "triangles": 3160,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 28222.07,
+    "print_bounds_mm": [
+      130.284,
+      112.0,
+      3.65
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "05_front_lower.stl",
+    "triangles": 1920,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 42914.29,
+    "print_bounds_mm": [
+      138.731,
+      99.759,
+      3.65
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "06_front_splice_strip.stl",
+    "triangles": 12,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 4000.0,
+    "print_bounds_mm": [
+      20.0,
+      80.0,
+      2.5
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "07_optics_insert.stl",
+    "triangles": 3804,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 15006.77,
+    "print_bounds_mm": [
+      79.991,
+      79.982,
+      4.3
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "09_rear_cable_blank.stl",
+    "triangles": 836,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 1179.18,
+    "print_bounds_mm": [
+      5.0,
+      19.995,
+      19.998
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "10_hood.stl",
+    "triangles": 5628,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 254092.72,
+    "print_bounds_mm": [
+      119.062,
+      138.113,
+      186.906
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "11_camera_pole_saddle.stl",
+    "triangles": 2444,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 141336.39,
+    "print_bounds_mm": [
+      30.0,
+      74.0,
+      90.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "12_camera_spacer_1.stl",
+    "triangles": 840,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 1751.97,
+    "print_bounds_mm": [
+      32.0,
+      9.998,
+      9.999
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "12_camera_spacer_2.stl",
+    "triangles": 840,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 1751.97,
+    "print_bounds_mm": [
+      32.0,
+      9.998,
+      9.999
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "12_camera_spacer_3.stl",
+    "triangles": 840,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 1751.97,
+    "print_bounds_mm": [
+      32.0,
+      9.998,
+      9.999
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "12_camera_spacer_4.stl",
+    "triangles": 840,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 1751.97,
+    "print_bounds_mm": [
+      32.0,
+      9.998,
+      9.999
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "20_solar_pole_yoke.stl",
+    "triangles": 2276,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 384669.33,
+    "print_bounds_mm": [
+      99.989,
+      90.0,
+      150.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "21_solar_pivot_block.stl",
+    "triangles": 440,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 388797.86,
+    "print_bounds_mm": [
+      218.0,
+      125.0,
+      40.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "23_rail_clamp_-220_-180.stl",
+    "triangles": 876,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 30467.58,
+    "print_bounds_mm": [
+      50.0,
+      40.0,
+      31.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "23_rail_clamp_-220_180.stl",
+    "triangles": 876,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 30467.58,
+    "print_bounds_mm": [
+      50.0,
+      40.0,
+      31.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "23_rail_clamp_220_-180.stl",
+    "triangles": 876,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 30467.58,
+    "print_bounds_mm": [
+      50.0,
+      40.0,
+      31.0
+    ],
+    "fits_220mm_cube": true
+  },
+  {
+    "file": "23_rail_clamp_220_180.stl",
+    "triangles": 876,
+    "all_edges_have_two_faces": true,
+    "signed_volume_mm3": 30467.58,
+    "print_bounds_mm": [
+      50.0,
+      40.0,
+      31.0
+    ],
+    "fits_220mm_cube": true
+  }
+]

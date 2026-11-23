@@ -21,3 +21,4 @@
 /research/**/*.so
 /research/**/*.spv
 /research/**/__pycache__/
+/research/**/*.zip
